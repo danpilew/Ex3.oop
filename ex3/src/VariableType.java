@@ -1,27 +1,15 @@
+import java.lang.reflect.Type;
+
 
 public class VariableType {
 	
 	private Type type;
 	
 	public VariableType(String str){
-		type = new Varia str.toUpperCase();
+		type = Enum<Type>.valueOf(Type, str);
 	}
 	
 	public String getName(){
-		switch (type) {
-		case INT: 
-		case DOUBLE: 
-		case STRING: 
-		case BOOLEAN:
-		case CHAR: return (type.name().toLowerCase());
-		default:
-			return "";
-			// exeption
-		}	
-		
-	
-		
-		
+			return type.toString().toUpperCase();
+		}		
 	}
-	
-}
