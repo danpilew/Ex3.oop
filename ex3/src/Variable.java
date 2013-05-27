@@ -4,5 +4,4 @@ public class Variable {
 	VariableType type;
 	boolean isFinal;
 	boolean hasValue;
-
 }

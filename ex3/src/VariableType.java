@@ -1,8 +1,13 @@
 
 public class VariableType {
-	public enum Type {INT, DOUBLE, STRING, BOOLEAN, CHAR}; 
 	
-	public String getName(Type type){
+	private Type type;
+	
+	public VariableType(String str){
+		type = new Varia str.toUpperCase();
+	}
+	
+	public String getName(){
 		switch (type) {
 		case INT: 
 		case DOUBLE: 
@@ -12,9 +17,11 @@ public class VariableType {
 		default:
 			return "";
 			// exeption
-			
-		
 		}	
+		
+	
+		
+		
 	}
 	
 }
