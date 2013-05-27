@@ -11,5 +11,6 @@ public class VariableType {
 	
 	public String getName(){
 			return type.toString().toUpperCase();
+			// if Sting
 		}		
 	}
