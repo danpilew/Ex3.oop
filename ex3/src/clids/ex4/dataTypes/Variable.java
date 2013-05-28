@@ -1,3 +1,5 @@
+package clids.ex4.dataTypes;
+
 
 public class Variable {
 	private final String name;

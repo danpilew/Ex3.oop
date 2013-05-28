@@ -1,3 +1,5 @@
+package clids.ex4.dataTypes;
+
 public class Block {
 	private int startLine;
 	private String[] lines;

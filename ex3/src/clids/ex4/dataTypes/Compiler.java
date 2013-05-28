@@ -1,3 +1,4 @@
+package clids.ex4.dataTypes;
 import Exceptions.TypeNotMatchesException;
 import Exceptions.notInitializedVariableException;
 

@@ -1,3 +1,4 @@
+package clids.ex4.compiler;
 
 public class Syntax {
 	//GENERAL
