@@ -21,15 +21,20 @@ public class Parser {
 		
 		
 		for(int n = 0; n<code.length; n++){
-			Variable newVar = null;
+			Variable[] newVars = null;
 			Method newMethod = null;
 			try {
-				newVar = Compiler.isVarDecleration(code[n], (Variable[]) members.toArray(new Variable[members.size()]));
+				newVars = Compiler.isVarDecleration(code[n], (Variable[]) members.toArray(new Variable[members.size()]));
 			} catch (TypeNotMatchesException | notInitializedVariableException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(newVar != null) {members.add(newVar);}
+			if(newVars != null)
+			{
+					for(Variable var: newVars){
+						members.add(var);
+					}
+				}
 			else{
 				newMethod = Compiler.isMethDecleration(code[n],(Method[]) methods.toArray(new Method[methods.size()]));
 			}
