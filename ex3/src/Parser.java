@@ -55,7 +55,7 @@ public class Parser {
 			if(line.charAt(i) == Syntax.closeBlock.charAt(0)){blockCounter--;}
 		}
 			
-		while(blockCounter == 0 ){
+		while(blockCounter != 0 ){
 			lineNumber++;
 			if(lineNumber == code.length){}
 				//Throw Exception
@@ -67,6 +67,7 @@ public class Parser {
 		}
 		
 		String[] blockCode = Arrays.copyOfRange(code, n, lineNumber);
+		blockCode[0] = blockCode[0].substring(1);
 		return new Block(n, blockCode, null, null);
 		
 	}
