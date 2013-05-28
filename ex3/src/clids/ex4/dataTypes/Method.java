@@ -1,7 +1,7 @@
 package clids.ex4.dataTypes;
-import Exceptions.TypeNotMatchesException;
-import Exceptions.illigalVariablesNumberException;
-import Exceptions.notInitializedVariableException;
+import clids.ex4.Exceptions.TypeNotMatchesException;
+import clids.ex4.Exceptions.illigalVariablesNumberException;
+import clids.ex4.Exceptions.notInitializedVariableException;
 
 public class Method {
 	private final Variable[] variables;

@@ -7,14 +7,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import clids.ex4.Exceptions.TypeNotMatchesException;
+import clids.ex4.Exceptions.notInitializedVariableException;
 import clids.ex4.compiler.Compiler;
 import clids.ex4.compiler.Syntax;
 import clids.ex4.dataTypes.Block;
 import clids.ex4.dataTypes.Method;
 import clids.ex4.dataTypes.Variable;
 
-import Exceptions.TypeNotMatchesException;
-import Exceptions.notInitializedVariableException;
 
 public class Parser {
 	ArrayList<Variable> members = new ArrayList<Variable>();

@@ -1,4 +1,4 @@
-package Exceptions;
+package clids.ex4.Exceptions;
 
 public class notInitializedVariableException extends Exception {
 
