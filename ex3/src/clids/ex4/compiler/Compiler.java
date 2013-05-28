@@ -1,4 +1,6 @@
-package clids.ex4.dataTypes;
+package clids.ex4.compiler;
+import clids.ex4.dataTypes.Method;
+import clids.ex4.dataTypes.Variable;
 import Exceptions.TypeNotMatchesException;
 import Exceptions.notInitializedVariableException;
 

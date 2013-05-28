@@ -1,4 +1,3 @@
-package clids.ex4.compiler;
 
 public class Syntax {
 	//GENERAL
@@ -22,9 +21,10 @@ public class Syntax {
 	public static final String any_Value = "("+ intValue + "|" + doubleValue + "|" + charValue + "|" + 
 			StringValue + "|" + booleanValue + ")";
 	public static final String Equality = "=";
+	public static final String initialWay = varName + unS + 
+			(oBr + unS +Equality + unS + (oBr + any_Value + "|" + varName + cBr)) + unS; // check if () are OK 
 	
 	//METHODS
-	public static final String premitionsOfMethods = "public"; // could be expanded
 	public static final String methodReturn = "void"; // could be expanded
 	public static final String methodName = "\\d\\w*+"; //
 	public static final String Return = "return"; 
@@ -33,16 +33,16 @@ public class Syntax {
 	public static final String IfWhile = "(if|while)";
 	public static final String AndOR = "(&&|\\|\\|)";
 	public static final String legalInCondition = booleanValue + "|" + varName;
-	public static final String condition = unS + oBr + unS + legalInCondition +
-		(unS + AndOR + unS + legalInCondition) + unS + closeBlock; // booleanValue included double
+	public static final String condition = unS + "\\(" + unS + legalInCondition +
+		(unS + AndOR + unS + legalInCondition) + unS + "\\)" + unS; // booleanValue included double
 	
 	
 	
 	// FINAL
-	public static final String var_Line = unS +  varModifiers + "?" + NS + (varType) + "?" + NS + 
-			(varName) + unS + Equality + "?" + (any_Value + "|" + varName) + "?" + endLine + unS; // closes are OK?
+	public static final String var_Line = unS + (oBr + varModifiers + cBr) + "?" + NS + (oBr + varType + cBr) + "?" + NS + 
+			initialWay+ unS + (oBr +unS + ","+ unS+ initialWay + cBr) +"*" + unS + endLine + unS; // closes are OK?
 			
-	public static final String method_Defined_Line = unS + premitionsOfMethods + NS + methodReturn +
+	public static final String method_Defined_Line = unS+ methodReturn +
 			NS + methodName + unS + oBr + 
 			(varType + NS + varName) + "?" + unS + 
 			(","+ unS +varType + NS + varName+unS) + "*"

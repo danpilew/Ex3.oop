@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import clids.ex4.compiler.Compiler;
 import clids.ex4.compiler.Syntax;
 import clids.ex4.dataTypes.Block;
-import clids.ex4.dataTypes.Compiler;
 import clids.ex4.dataTypes.Method;
 import clids.ex4.dataTypes.Variable;
 
