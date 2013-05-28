@@ -1,12 +1,12 @@
 
 public class Syntax {
 	//GENERAL
-	public static final String Nspace = "\\s++"; // Necessary space, TO CHECK ABOUT POSSESIVE
-	public static final String unNspace = "\\s*+"; // unNecessary space,  TO CHECK ABOUT POSSESIVE
-	public static final String openBrackets = "(";
-	public static final String closeBrackets = ")";
-	public static final String openBlock = "{";
-	public static final String closeBlock = "}";
+	public static final String NS = "\\s++"; // Necessary space
+	public static final String unS = "\\s*+"; // unNecessary space
+	public static final String oBr = "("; // openBrackets
+	public static final String cBr = ")"; //closeBrackets
+	public static final String openBlock = "{"; //openBlock
+	public static final String closeBlock = "}"; //closeBlock
 	public static final String endLine = ";";
 	
 	// VARIABELES
@@ -26,32 +26,32 @@ public class Syntax {
 	public static final String premitionsOfMethods = "public"; // could be expanded
 	public static final String methodReturn = "void"; // could be expanded
 	public static final String methodName = "\\d\\w*+"; //
-	public static final String Return = "return";
+	public static final String Return = "return"; 
 	
 	//IF, WHILE BLOCKS
 	public static final String IfWhile = "(if|while)";
 	public static final String AndOR = "(&&|\\|\\|)";
 	public static final String legalInCondition = booleanValue + "|" + varName;
-	public static final String condition = unNspace + openBrackets + unNspace + legalInCondition +
-		(unNspace + AndOR + unNspace + legalInCondition) + unNspace + closeBlock; // booleanValue included double
+	public static final String condition = unS + oBr + unS + legalInCondition +
+		(unS + AndOR + unS + legalInCondition) + unS + closeBlock; // booleanValue included double
 	
 	
 	
 	// FINAL
-	public static final String var_Line = unNspace + (varModifiers) + "?" + Nspace + (varType) + "?" + Nspace + 
-			(varName) + unNspace + Equality + "?" + (any_Value + "|" + varName) + "?" + endLine + unNspace; // closes are OK?
+	public static final String var_Line = unS +  varModifiers + "?" + NS + (varType) + "?" + NS + 
+			(varName) + unS + Equality + "?" + (any_Value + "|" + varName) + "?" + endLine + unS; // closes are OK?
 			
-	public static final String method_Defined_Line = unNspace + premitionsOfMethods + Nspace + methodReturn +
-			Nspace + methodName + unNspace + openBrackets + 
-			(varType + Nspace + varName) + "?" + unNspace + 
-			(","+ unNspace +varType + Nspace + varName+unNspace) + "*"
-			+ closeBrackets + unNspace; // check it
+	public static final String method_Defined_Line = unS + premitionsOfMethods + NS + methodReturn +
+			NS + methodName + unS + oBr + 
+			(varType + NS + varName) + "?" + unS + 
+			(","+ unS +varType + NS + varName+unS) + "*"
+			+ cBr + unS; // check it - could be final
 	
-	public static final String method_call_Line = unNspace + methodName + unNspace + openBrackets + 
-			varName + "?" + unNspace + (","+ unNspace + varName + unNspace) + "*" + 
-			closeBrackets + endLine + unNspace;
+	public static final String method_call_Line = unS + methodName + unS + oBr + 
+			varName + "?" + unS + (","+ unS + varName + unS) + "*" + 
+			cBr + endLine + unS;
 	
-	public static final String IfWhile_Line = IfWhile + unNspace + condition + unNspace; 
+	public static final String IfWhile_Line = IfWhile + unS + condition + unS; 
 	
 
 	public Syntax() {
