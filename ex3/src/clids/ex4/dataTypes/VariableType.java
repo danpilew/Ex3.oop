@@ -1,7 +1,8 @@
 package clids.ex4.dataTypes;
-import java.lang.reflect.Type;
 
-
+public enum Type{
+	 INT, DOUBLE, STRING, BOOLEAN, CHAR
+}
 public class VariableType {
 	
 	private Type type;
@@ -10,8 +11,17 @@ public class VariableType {
 		//type = Enum<Type>.valueOf(Type, str);
 	}
 	
-	public String getName(){
-			return type.toString().toUpperCase();
+	public static String getName(Type type){
+			switch (type) {
+			case INT:
+			
+				
+				
+				break;
+
+			default:
+				break;
+			}
 			// if Sting
 		}		
 	}

@@ -3,7 +3,7 @@ package clids.ex4.dataTypes;
 
 public class Variable {
 	private final String name;
-	private final VariableType type;
+	private final Type type;
 	private final boolean isFinal;
 	private final boolean hasValue;
 	
