@@ -5,12 +5,16 @@ import Exceptions.notInitializedVariableException;
 public class Method {
 	private final Variable[] variables;
 	private final String name;
-	private final Block commands;
+	private Block commands;
 
-	public Method(Variable[] variables, String name, Block commands) {
+	public Method(Variable[] variables, String name) {
 		this.variables = variables;
 		this.name = name;
-		this.commands = commands;
+		commands = null;
+	}
+	public void setBlock(Block block){
+		if(commands == null)
+			commands = block;
 	}
 
 	public Block getCommands() {

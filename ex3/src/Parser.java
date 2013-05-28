@@ -3,6 +3,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import Exceptions.TypeNotMatchesException;
+import Exceptions.notInitializedVariableException;
 
 
 public class Parser {
@@ -10,17 +14,57 @@ public class Parser {
 	ArrayList<Method> methods = new ArrayList<Method>();
 	String[] code;
 	public Parser(File file) {
-		String[] code = getStringFromFile(file);
+		code = getStringFromFile(file);
 	}
 	
 	public void parse(File file){
 		
 		
 		for(int n = 0; n<code.length; n++){
+			Variable newVar = null;
+			Method newMethod = null;
+			try {
+				newVar = Compiler.isVarDecleration(code[n], (Variable[]) members.toArray(new Variable[members.size()]));
+			} catch (TypeNotMatchesException | notInitializedVariableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(newVar != null) {members.add(newVar);}
+			else{
+				newMethod = Compiler.isMethDecleration(code[n],(Method[]) methods.toArray(new Method[methods.size()]));
+			}
+			if(newMethod == null){}
+				//throw Exception
+			
 			
 		}
 	}
 	
+	public Block findBlock(int n){
+		int lineNumber = n;
+		int blockCounter = 0;
+		System.out.println("lineNumber = " + lineNumber);
+		String line = code[lineNumber];
+		for(int i = 0; i<line.length() ; i++){
+			if(line.charAt(i) == Syntax.openBlock.charAt(0)){blockCounter++;}
+			if(line.charAt(i) == Syntax.closeBlock.charAt(0)){blockCounter--;}
+		}
+			
+		while(blockCounter == 0 ){
+			lineNumber++;
+			if(lineNumber == code.length){}
+				//Throw Exception
+			line = code[lineNumber];
+			for(int i = 0; i<line.length() ; i++){
+				if(line.charAt(i) == Syntax.openBlock.charAt(0)){blockCounter++;}
+				if(line.charAt(i) == Syntax.closeBlock.charAt(0)){blockCounter--;}
+			}
+		}
+		
+		String[] blockCode = Arrays.copyOfRange(code, n, lineNumber);
+		return new Block(n, blockCode, null, null);
+		
+	}
 	private static String[] getStringFromFile(File code) {
 		String[] ret = null;
 		try (BufferedReader br = new BufferedReader(new FileReader(code))) {
