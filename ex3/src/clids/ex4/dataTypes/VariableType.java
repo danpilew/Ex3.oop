@@ -7,7 +7,7 @@ public class VariableType {
 	private Type type;
 	
 	public VariableType(String str){
-		type = Enum<Type>.valueOf(Type, str);
+		//type = Enum<Type>.valueOf(Type, str);
 	}
 	
 	public String getName(){
