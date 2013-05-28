@@ -21,23 +21,19 @@ public class Parser {
 	ArrayList<Method> methods = new ArrayList<Method>();
 	String[] code;
 
-	public Parser(File file) {
+	public Parser(File file) throws IOException {
 		code = getStringFromFile(file);
 	}
 
-	public void parse(File file) {
+	public void parse() throws TypeNotMatchesException, notInitializedVariableException {
 
 		for (int n = 0; n < code.length; n++) {
 			Variable[] newVars = null;
 			Method newMethod = null;
-			try {
+			
 				newVars = Compiler.VarDefine(code[n],
 						(Variable[]) members.toArray(new Variable[members
 								.size()]));
-			} catch (TypeNotMatchesException | notInitializedVariableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			if (newVars != null) {
 				for (Variable var : newVars) {
 					members.add(var);
@@ -102,7 +98,7 @@ public class Parser {
 
 	}
 
-	private static String[] getStringFromFile(File code) {
+	private static String[] getStringFromFile(File code) throws IOException {
 		String[] ret = null;
 		try (BufferedReader br = new BufferedReader(new FileReader(code))) {
 			ArrayList<String> codeLines = new ArrayList<String>();
@@ -114,7 +110,7 @@ public class Parser {
 			}
 			ret = (String[]) codeLines.toArray(new String[codeLines.size()]);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw e;
 		}
 		return ret;
 	}
