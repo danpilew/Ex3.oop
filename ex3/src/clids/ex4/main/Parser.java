@@ -49,6 +49,10 @@ public class Parser {
 			methods.add(newMethod);
 			//Skips the Method
 			n = n +newMethod.getCommands().getLines().length-1;
+		}
+		
+		// ****STEP 2********8
+		for(Method method : methods){
 			
 		}
 	}
