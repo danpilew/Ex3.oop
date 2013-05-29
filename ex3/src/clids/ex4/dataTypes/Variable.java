@@ -9,7 +9,7 @@ public class Variable {
 	
 	
 	
-	public Variable(String name, VariableType type, boolean isFinal,
+	public Variable(String name, Type type, boolean isFinal,
 			boolean hasValue) {
 		this.name = name;
 		this.type = type;
@@ -20,7 +20,7 @@ public class Variable {
 	public String getName() {
 		return name;
 	}
-	public VariableType getType() {
+	public Type getType() {
 		return type;
 	}
 	public boolean isFinal() {

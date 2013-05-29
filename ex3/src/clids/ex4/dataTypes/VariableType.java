@@ -1,26 +1,29 @@
 package clids.ex4.dataTypes;
 
-public enum Type{
-	 INT, DOUBLE, STRING, BOOLEAN, CHAR
-}
+
 public class VariableType {
+	
+	public enum Type{
+		 INT, DOUBLE, STRING, BOOLEAN, CHAR
+	}
 	
 	private Type type;
 	
-	public VariableType(String str){
-		//type = Enum<Type>.valueOf(Type, str);
+	public static Type(String str){
+		
 	}
 	
 	public static String getName(Type type){
 			switch (type) {
 			case INT:
-			
-				
-				
-				break;
-
+			case DOUBLE:
+			case CHAR:
+			case BOOLEAN:
+				return type.name().toLowerCase();
+			case STRING:
+				return "String";
 			default:
-				break;
+				return "";
 			}
 			// if Sting
 		}		
