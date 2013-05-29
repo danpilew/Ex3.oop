@@ -7,10 +7,8 @@ public class VariableType {
 		 INT, DOUBLE, STRING, BOOLEAN, CHAR
 	}
 	
-	private Type type;
-	
-	public static Type(String str){
-		
+	public static Type valueOf (String str){
+		return Type.valueOf(str.toUpperCase()); // CHECK IT
 	}
 	
 	public static String getName(Type type){

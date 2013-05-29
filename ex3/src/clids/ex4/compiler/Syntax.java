@@ -41,7 +41,7 @@ public class Syntax {
 	
 	// FINAL
 	public static final String var_Line = unS + (oBr + varModifiers + cBr) + "?" + NS + (oBr + varType + cBr) + "?" + NS + 
-			initialWay+ unS + (oBr +unS + ","+ unS+ initialWay + cBr) +"*" + unS + endLine + unS; // closes are OK?
+			(oBr +unS +initialWay+ unS + cBr) + unS + (oBr +unS + ","+ unS+ initialWay + cBr) +"*" + unS + endLine + unS; // closes are OK?
 			
 	public static final String method_Defined_Line = unS+ methodReturn +
 			NS + methodName + unS + oBr + 
