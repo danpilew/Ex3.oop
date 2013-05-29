@@ -41,8 +41,8 @@ public class Method {
 		}
 		for (int i = 0; i < variables.length; i++) {
 			if (variables[i].getType() != inputVars[i].getType()) {
-				throw new TypeNotMatchesException(variables[i].getType()
-						.getName(), inputVars[i].getType().getName());
+				throw new TypeNotMatchesException(VariableType.getName(variables[i].getType()) 
+						, VariableType.getName(inputVars[i].getType())); // CHECK IT, RETURN NAME OF TYPE, NOT OF VAR
 			}
 		}
 	}
