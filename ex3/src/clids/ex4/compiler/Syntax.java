@@ -14,11 +14,11 @@ public class Syntax {
 	public static final String varType = "(int|double|String|boolean|char)";
 	public static final String varModifiers = "final";
 	public static final String varName = "_?[a-zA-Z]\\w*+";
-	public static final String intValue = "-?\\d+";
-	public static final String doubleValue = intValue +"(\\.\\d)?\\d*+"; // how to use point ( "." ) as point?
-	public static final String charValue = ".";
-	public static final String StringValue = " \" " + charValue + "*" + " \" ";
-	public static final String booleanValue = "[true, false]" + "|" +  doubleValue;  // check IT
+	public static final String intValue = unS + "-?\\d+" + unS;
+	public static final String doubleValue = unS + intValue +"(\\.\\d)?\\d*+" + unS; // how to use point ( "." ) as point?
+	public static final String charValue = unS + "." + unS;
+	public static final String StringValue = unS + " \" " + charValue + "*" + " \" " + unS;
+	public static final String booleanValue = unS + "[true, false]" + "|" +  doubleValue + unS;  // check IT
 	public static final String any_Value = "("+ intValue + "|" + doubleValue + "|" + charValue + "|" + 
 			StringValue + "|" + booleanValue + ")";
 	public static final String Equality = "=";
