@@ -20,7 +20,7 @@ public class Compiler {
 	
 	public static boolean VarDefine(String line ,Block currentBlock) 
 			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
-		HashMap<String, Variable> members = currentBlock.getVariables();
+		HashMap<String, Variable> localVars = currentBlock.getVariables();
 		final Pattern Var_PATTERN = Pattern.compile(Syntax.var_Line);
 		Matcher VarMatcher = Var_PATTERN.matcher(line);
 		if (VarMatcher.matches()){
@@ -37,17 +37,18 @@ public class Compiler {
 			// 1 - because must be one variable at group (3) 
 			// the other variables are
 			String firstVar = VarMatcher.group(3).replaceAll(Syntax.unS, "");
-			initialVar(firstVar, isFinal, type, members); 
+			initialVar(firstVar, isFinal, type, localVars, currentBlock); 
 			String extraVarsEsp =  VarMatcher.group(4).replaceAll(Syntax.unS, "");
 			//int variablesNum = VarMatcher.group(4).split(",").length; // +1 (first var) -1 (null before first ,))
 			String[] extraVars =  extraVarsEsp.split(",");
 			for (String varDef: extraVars){
-				initialVar(varDef, isFinal, type, members);
+				initialVar(varDef, isFinal, type, localVars, currentBlock);
 			}
 		}
 				return false;
 	}
-	private static void initialVar(String expression, boolean isFinal, Type type, HashMap<String, Variable> members) throws TypeNotMatchesException, VariableAlreadyExistException {
+	// Auxiliary method of VarDefine
+	private static void initialVar(String expression, boolean isFinal, Type type, HashMap<String, Variable> localVars, Block currentBlock) throws TypeNotMatchesException, VariableAlreadyExistException {
 		String[] arrExpression = expression.split("=");
 		boolean hasValue;
 		String name = arrExpression[0];
@@ -55,7 +56,7 @@ public class Compiler {
 			System.out.println("no name -  WHAT THE FUCK?!"); // REMOVE
 			return;
 		}
-		if (members.get(name) != null){
+		if (localVars.get(name) != null){
 			VariableAlreadyExistException e = new VariableAlreadyExistException();
 			throw e;
 		}
@@ -65,7 +66,7 @@ public class Compiler {
 		}
 		else if (arrExpression.length==2){
 			String value = arrExpression[1];
-			if (valueIsOk(value, type, members)){
+			if (valueIsOk(value, type, localVars, currentBlock)){
 				hasValue = true;
 			}
 			else{
@@ -78,14 +79,14 @@ public class Compiler {
 			return;
 		}
 		
-		members.put(name, new Variable(name, type, isFinal, hasValue)); 
+		localVars.put(name, new Variable(name, type, isFinal, hasValue)); 
 	}
-
-	private static boolean valueIsOk(String value, Type type, HashMap<String, Variable> members) {
+	// Auxiliary method of initialVar
+	private static boolean valueIsOk(String value, Type type, HashMap<String, Variable> localVars, Block currentBlock) {
 		
 		if (isValueFitExpression(value, type))
 			return true;
-		if (isValueFitMember(value, members, type))
+		if (isValueFitVar(value,  type, currentBlock))
 			return true;
 		return false;
 		}
@@ -93,17 +94,17 @@ public class Compiler {
 		
 		
 	
-
-	private static boolean isValueFitMember(String value, HashMap<String, Variable> members, Type type) {
-		for (Variable var: members.values()){
-			if (var.getName() == value){
-				if (var.getType().equals(type)) // ASK BERKO ABOUUT TYPES
-					return true;
+	// Auxiliary method of valueIsOk
+	private static boolean isValueFitVar(String name, Type type, Block currentBlock) {
+		Variable varCalledName = currentBlock.getVar(name);
+		if (varCalledName != null){
+			if (varCalledName.getType() == type){
+				return true;
 			}
 		}
 		return false;
 	}
-
+	// Auxiliary method of valueIsOk
 	private static boolean isValueFitExpression(String value, Type type) {
 		String valueType = null;
 		switch (type) {
