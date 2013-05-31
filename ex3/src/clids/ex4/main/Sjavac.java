@@ -20,6 +20,7 @@ private static final String IO_FAILIOUR_MASSAGE = " IO Exception, wrong file des
 			System.exit(IO_FAILIOUR);
 		}
 		try {
+			//
 			parser.parse();
 		} catch (TypeNotMatchesException |  notInitializedVariableException e) {
 			
