@@ -52,7 +52,7 @@ public class Parser {
 		}
 	}
 
-	public void compileBlock(Block commands) {
+	public void compileBlock(Block commands) throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
 		for(int n =0 ; n<commands.getLines().length ; n++){
 			String line = commands.getLines()[n];
 			if(!Compiler.VarDefine(line, commands )){

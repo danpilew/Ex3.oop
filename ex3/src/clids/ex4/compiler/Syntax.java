@@ -49,8 +49,8 @@ public class Syntax {
 			(","+ unS +varType + NS + varName+unS) + "*"
 			+ cBr + unS; // check it - could be final
 	
-	public static final String method_call_Line = unS + methodName + unS + oBr + 
-			varName + "?" + unS + (","+ unS + varName + unS) + "*" + 
+	public static final String method_call_Line = unS +"("+ methodName + ")" + unS + oBr + 
+			"(" + varName  +"?" + unS + (","+ unS + varName + unS) + "*" + ")" + 
 			cBr + endLine + unS;
 	
 	public static final String IfWhile_Line = IfWhile + unS + condition + unS; 

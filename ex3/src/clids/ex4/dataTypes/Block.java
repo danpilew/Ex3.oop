@@ -1,5 +1,6 @@
 package clids.ex4.dataTypes;
 
+
 import java.util.HashMap;
 
 public class Block {
@@ -35,7 +36,16 @@ public class Block {
 		return lines;
 	}
 	
-	
+	public Variable getVar(String varName){
+		Variable ret = null;
+		Block curBlock = this;
+		ret = curBlock.getVariables().get(varName);
+		while(ret==null && curBlock.getFatherBlock() != null){
+			curBlock = curBlock.getFatherBlock();
+			ret = curBlock.getVariables().get(varName);
+		}
+		return ret;
+	}
 	
 
 }

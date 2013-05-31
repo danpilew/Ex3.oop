@@ -1,7 +1,13 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import clids.ex4.Exceptions.DuplicateMethodException;
+import clids.ex4.compiler.Syntax;
 import clids.ex4.dataTypes.Block;
+import clids.ex4.dataTypes.Method;
 import clids.ex4.main.Parser;
 
 
@@ -27,4 +33,22 @@ public class test2 {
 			System.out.println(str);
 		}
 	}
+	
+	public static boolean methodCall(String line,
+			HashMap<String, Method> methods, int n) throws DuplicateMethodException {
+		Pattern metCall = Pattern.compile(Syntax.method_call_Line);
+		Matcher valueMatcher = metCall.matcher(line);
+		if(valueMatcher.matches()){
+			
+			String newMethName = valueMatcher.group(1);
+			if(methods.get(newMethName) ==null)
+				throw new InvalidMethodException(newMethName);
+			String varsName = valueMatcher.group(2);
+			varsName = varsName.replace(Syntax.unS, "");
+			String vars = null
+		}
+		return false;
+	}
+	
+	
 }
