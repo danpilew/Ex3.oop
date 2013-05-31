@@ -7,6 +7,7 @@ import clids.ex4.Exceptions.TypeNotMatchesException;
 import clids.ex4.Exceptions.VariableAlreadyExistException;
 import clids.ex4.Exceptions.charAfterEndException;
 import clids.ex4.Exceptions.notInitializedVariableException;
+import clids.ex4.dataTypes.Block;
 import clids.ex4.dataTypes.Method;
 import clids.ex4.dataTypes.Variable;
 import clids.ex4.dataTypes.VariableType;
@@ -17,8 +18,9 @@ public class Compiler {
 
 
 	
-	public static boolean VarDefine(String line ,HashMap<String, Variable> members) 
+	public static boolean VarDefine(String line ,Block currentBlock) 
 			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
+		HashMap<String, Variable> members = currentBlock.getVariables();
 		final Pattern Var_PATTERN = Pattern.compile(Syntax.var_Line);
 		Matcher VarMatcher = Var_PATTERN.matcher(line);
 		if (VarMatcher.matches()){
@@ -128,6 +130,18 @@ public class Compiler {
 
 	public static boolean MethDefine(String string,
 			HashMap<String, Method> methods, int n) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public static Block blockDefine(String line,
+			HashMap<String, Method> methods, int n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public static boolean methodCall(String line,
+			HashMap<String, Method> methods, int n) {
+		Pattern metCall = Pattern.compile(Syntax.method_call_Line);
+		
 		// TODO Auto-generated method stub
 		return false;
 	}
