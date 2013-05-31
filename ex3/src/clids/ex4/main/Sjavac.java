@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import clids.ex4.Exceptions.TypeNotMatchesException;
+import clids.ex4.Exceptions.VariableAlreadyExistException;
 import clids.ex4.Exceptions.charAfterEndException;
 import clids.ex4.Exceptions.notInitializedVariableException;
 
@@ -23,7 +24,7 @@ private static final String IO_FAILIOUR_MASSAGE = " IO Exception, wrong file des
 		try {
 			//
 			parser.parse();
-		} catch (TypeNotMatchesException |  notInitializedVariableException | charAfterEndException e) {
+		} catch (TypeNotMatchesException |  notInitializedVariableException | charAfterEndException | VariableAlreadyExistException e) {
 			
 			e.printStackTrace();
 		}

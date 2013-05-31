@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import clids.ex4.Exceptions.TypeNotMatchesException;
+import clids.ex4.Exceptions.VariableAlreadyExistException;
 import clids.ex4.Exceptions.charAfterEndException;
 import clids.ex4.Exceptions.notInitializedVariableException;
 import clids.ex4.compiler.Compiler;
@@ -17,41 +18,43 @@ import clids.ex4.dataTypes.Block;
 import clids.ex4.dataTypes.Method;
 import clids.ex4.dataTypes.Variable;
 
-
 public class Parser {
 	HashMap<String, Variable> members = new HashMap<String, Variable>();
 	HashMap<String, Method> methods = new HashMap<String, Method>();
 	Block superBlock;
 
 	public Parser(File file) throws IOException {
-		superBlock = new Block(0, getStringFromFile(file),null,members);
+		superBlock = new Block(0, getStringFromFile(file), null, members);
 	}
 
-	public void parse() throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException {
+	public void parse() throws TypeNotMatchesException,
+			notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
 		String[] code = superBlock.getLines();
 		for (int n = 0; n < code.length; n++) {
-			
-				boolean isNewVars = Compiler.VarDefine(code[n], members);
 
-			if(!isNewVars) {
-				boolean isNewMethod = Compiler.isMethDecleration(code[n], methods,n);
-			if (!isNewMethod) {
+			boolean isNewVars = Compiler.VarDefine(code[n], members);
+
+			if (!isNewVars) {
+				boolean isNewMethod = Compiler.MethDefine(code[n], methods, n);
+				if (!isNewMethod) {
+				}
+				// throw Exception
+				// Skips the Method
+			//	n = n + newMethod.getCommands().getLines().length - 1;
+				// HANDEL THIS
 			}
-			// throw Exception
-			//Skips the Method
-			n = n +newMethod.getCommands().getLines().length-1;
-		}
-		
-		// ****STEP 2********8
-		for(Method method : methods.values()){
-			
+
+			// ****STEP 2********8
+			for (Method method : methods.values()) {
+
+			}
 		}
 	}
 
-	public void compileBlock(Block block){
-		
-		
+	public void compileBlock(Block block) {
+
 	}
+
 	public Block findBlock(int n) {
 		String[] code = superBlock.getLines();
 		int lineNumber = n;
@@ -87,7 +90,7 @@ public class Parser {
 		// Removes everything that is before the '{'
 		blockCode[0] = blockCode[0].substring(blockCode[0]
 				.indexOf(Syntax.openBlock.charAt(0)) + 1);
-		//removes everyThing that is after the '}'
+		// removes everyThing that is after the '}'
 		blockCode[blockCode.length - 1] = blockCode[blockCode.length - 1]
 				.substring(0, blockCode.length - 1);
 		return new Block(n, blockCode, null, null);

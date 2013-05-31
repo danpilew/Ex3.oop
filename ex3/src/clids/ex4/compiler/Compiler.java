@@ -1,8 +1,10 @@
 package clids.ex4.compiler;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import clids.ex4.Exceptions.TypeNotMatchesException;
+import clids.ex4.Exceptions.VariableAlreadyExistException;
 import clids.ex4.Exceptions.charAfterEndException;
 import clids.ex4.Exceptions.notInitializedVariableException;
 import clids.ex4.dataTypes.Method;
@@ -17,9 +19,8 @@ public class Compiler {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static Variable[] VarDefine(String line ,Variable[] members) 
-			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException {
-		Variable [] variables;
+	public static boolean VarDefine(String line ,HashMap<String, Variable> members) 
+			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
 		final Pattern Var_PATTERN = Pattern.compile(Syntax.var_Line);
 		Matcher VarMatcher = Var_PATTERN.matcher(line);
 		if (VarMatcher.matches()){
@@ -35,22 +36,32 @@ public class Compiler {
 			// initial the array of Variables -
 			// 1 - because must be one variable at group (3) 
 			// the other variables are
-			int variablesNum = 1+ VarMatcher.group(4).split(",").length;
-			variables = new Variable[variablesNum]; // MAYBE USE LINKEDLIST
-			variables[0] = initialVar(VarMatcher.group(3), isFinal, type, members); 
+			String firstVar = VarMatcher.group(3).replaceAll(Syntax.unS, "");
+			initialVar(firstVar, isFinal, type, members); 
+			String extraVars =  VarMatcher.group(4).replaceAll(Syntax.unS, "");
+			int variablesNum = VarMatcher.group(4).split(",").length; // +1 (first var) -1 (null before first ,))
+			
+			
+
 			
 			
 			
 		}
-				return null;
+				return false;
 	}
-	private static Variable initialVar(String expression, boolean isFinal, Type type, Variable[] members) throws TypeNotMatchesException {
+	private static void initialVar(String expression, boolean isFinal, Type type, HashMap<String, Variable> members) throws TypeNotMatchesException, VariableAlreadyExistException {
 		String[] arrExpression = expression.split("=");
 		boolean hasValue;
 		String name = arrExpression[0];
-		name.replaceAll(" ","");
-		if (name.equals(""))
-			return null;
+		if (name.equals("")){
+			System.out.println("no name -  WHAT THE FUCK?!"); // REMOVE
+			return;
+		}
+		if (members.get(name) != null){
+			VariableAlreadyExistException e = new VariableAlreadyExistException();
+			throw e;
+		}
+			
 		if (arrExpression.length == 1){
 			hasValue = false;
 		}
@@ -60,20 +71,19 @@ public class Compiler {
 				hasValue = true;
 			}
 			else{
-				TypeNotMatchesException ex = new TypeNotMatchesException(name, value);
-				throw ex;
+				TypeNotMatchesException e = new TypeNotMatchesException(name, value);
+				throw e;
 			}
 		}
 		else{
-			//Exception unknownException;
-			//throw unknownException;
-			return null;
+			System.out.println("split by = > 2 - WTF?!");
+			return;
 		}
 		
-		return new Variable(name, type, isFinal, hasValue);
+		members.put(name, new Variable(name, type, isFinal, hasValue)); 
 	}
 
-	private static boolean valueIsOk(String value, Type type, Variable[] members) {
+	private static boolean valueIsOk(String value, Type type, HashMap<String, Variable> members) {
 		
 		if (isValueFitExpression(value, type))
 			return true;
@@ -86,11 +96,10 @@ public class Compiler {
 		
 	
 
-	private static boolean isValueFitMember(String value, Variable[] members, Type type) {
-		value.replaceAll(" ", "");
-		for (Variable var: members){
+	private static boolean isValueFitMember(String value, HashMap<String, Variable> members, Type type) {
+		for (Variable var: members.values()){
 			if (var.getName() == value){
-				if (var.getType().equals(type))
+				if (var.getType().equals(type)) // ASK BERKO ABOUUT TYPES
 					return true;
 			}
 		}
@@ -120,8 +129,11 @@ public class Compiler {
 			return false;
 	}
 
-	public static Method isMethDecleration(String str ,Method[] methods) {
-		return null;
+
+	public static boolean MethDefine(String string,
+			HashMap<String, Method> methods, int n) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
