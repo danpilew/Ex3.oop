@@ -15,7 +15,7 @@ public class Syntax {
 	public static final String varModifiers = "final";
 	public static final String varName = "_?[a-zA-Z]\\w*+";
 	public static final String intValue = unS + "-?\\d+" + unS;
-	public static final String doubleValue = unS + intValue +"(\\.\\d)?\\d*+" + unS;
+	public static final String doubleValue = unS + intValue +"(?:\\.\\d)?\\d*+" + unS;
 	public static final String charValue = unS + "." + unS;
 	public static final String StringValue = unS +"\".*+\""+ unS;
 	public static final String booleanValue = unS + "true|false" + "|" +  doubleValue + unS;  // check IT
@@ -41,7 +41,8 @@ public class Syntax {
 	
 	// FINAL
 	public static final String var_Line = unS + (oBr + varModifiers + NS + cBr) + "?" +  varType  + "?" + NS + 
-			(oBr +unS +initialWay+ unS + cBr) + unS + (oBr +unS + ","+ unS+ initialWay + cBr) +"*" + unS + endLine + unS;
+			(oBr +unS +initialWay+ unS + cBr) + unS + (oBr + (oBr + ":?" +unS + ","+ unS+ initialWay + cBr) +"*" + cBr)
+					+ unS + endLine + unS;
 			
 	public static final String method_Defined_Line = unS+ methodReturn +
 			NS + methodName + unS + oBr + 
