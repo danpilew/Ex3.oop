@@ -6,8 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import clids.ex4.Exceptions.TypeNotMatchesException;
+import clids.ex4.Exceptions.charAfterEndException;
 import clids.ex4.Exceptions.notInitializedVariableException;
 import clids.ex4.compiler.Compiler;
 import clids.ex4.compiler.Syntax;
@@ -17,42 +19,31 @@ import clids.ex4.dataTypes.Variable;
 
 
 public class Parser {
-	ArrayList<Variable> members = new ArrayList<Variable>();
-	ArrayList<Method> methods = new ArrayList<Method>();
-	String[] code;
+	HashMap<String, Variable> members = new HashMap<String, Variable>();
+	HashMap<String, Method> methods = new HashMap<String, Method>();
+	Block superBlock;
 
 	public Parser(File file) throws IOException {
-		code = getStringFromFile(file);
+		superBlock = new Block(0, getStringFromFile(file),null,members);
 	}
 
-	public void parse() throws TypeNotMatchesException, notInitializedVariableException {
-
+	public void parse() throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException {
+		String[] code = superBlock.getLines();
 		for (int n = 0; n < code.length; n++) {
-			Variable[] newVars = null;
-			Method newMethod = null;
 			
-				newVars = Compiler.VarDefine(code[n],
-						(Variable[]) members.toArray(new Variable[members
-								.size()]));
-			if (newVars != null) {
-				for (Variable var : newVars) {
-					members.add(var);
-				}
-			} else {
-				newMethod = Compiler.isMethDecleration(code[n],
-						(Method[]) methods.toArray(new Method[methods.size()]));
-			}
-			if (newMethod == null) {
+				boolean isNewVars = Compiler.VarDefine(code[n], members);
+
+			if(!isNewVars) {
+				boolean isNewMethod = Compiler.isMethDecleration(code[n], methods,n);
+			if (!isNewMethod) {
 			}
 			// throw Exception
-			newMethod.setBlock(findBlock(n));
-			methods.add(newMethod);
 			//Skips the Method
 			n = n +newMethod.getCommands().getLines().length-1;
 		}
 		
 		// ****STEP 2********8
-		for(Method method : methods){
+		for(Method method : methods.values()){
 			
 		}
 	}
@@ -62,6 +53,7 @@ public class Parser {
 		
 	}
 	public Block findBlock(int n) {
+		String[] code = superBlock.getLines();
 		int lineNumber = n;
 		int blockCounter = 0;
 		System.out.println("lineNumber = " + lineNumber);

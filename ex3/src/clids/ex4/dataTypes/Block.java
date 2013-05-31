@@ -1,44 +1,40 @@
 package clids.ex4.dataTypes;
 
+import java.util.HashMap;
+
 public class Block {
-	private int startLine;
-	private String[] lines;
-	private Block[] blocks;
-	private Variable[] variables;
+	private final int startLine;
+	private final String[] lines;
+	private  final Block fatherBlock;
+	private HashMap<String,Variable> variables;
 	
-	public Block(int startLine, String[] lines, Block[] blocks, Variable[] variables) {
+	public Block(int startLine, String[] lines, Block fatherBlock, HashMap<String,Variable> variables) {
 		this.startLine = startLine;
 		this.lines = lines;
-		this.blocks = blocks;
-		this.variables = variables;
+		this.fatherBlock = fatherBlock;
+		this.variables = new HashMap<String, Variable>(variables);
 	}
 	
-	public Variable[] getVariables() {
+	public HashMap<String,Variable> getVariables() {
 		return variables;
 	}
 
-	public void setVariables(Variable[] variables) {
+	public void setVariables(HashMap<String, Variable> variables) {
 		this.variables = variables;
 	}
 
 	public int getStartLine() {
 		return startLine;
 	}
-	public void setStartLine(int startLine) {
-		this.startLine = startLine;
+	
+	public Block getFatherBlock() {
+		return fatherBlock;
 	}
+
 	public String[] getLines() {
 		return lines;
 	}
-	public void setLines(String[] lines) {
-		this.lines = lines;
-	}
-	public Block[] getBlocks() {
-		return blocks;
-	}
-	public void setBlocks(Block[] blocks) {
-		this.blocks = blocks;
-	}
+	
 	
 	
 
