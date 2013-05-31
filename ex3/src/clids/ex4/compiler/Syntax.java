@@ -15,15 +15,15 @@ public class Syntax {
 	public static final String varModifiers = "final";
 	public static final String varName = "_?[a-zA-Z]\\w*+";
 	public static final String intValue = unS + "-?\\d+" + unS;
-	public static final String doubleValue = unS + intValue +"(\\.\\d)?\\d*+" + unS; // how to use point ( "." ) as point?
+	public static final String doubleValue = unS + intValue +"(\\.\\d)?\\d*+" + unS;
 	public static final String charValue = unS + "." + unS;
-	public static final String StringValue = unS + " \" " + charValue + "*" + " \" " + unS;
-	public static final String booleanValue = unS + "[true, false]" + "|" +  doubleValue + unS;  // check IT
-	public static final String any_Value = "("+ intValue + "|" + doubleValue + "|" + charValue + "|" + 
+	public static final String StringValue = unS +"\".*+\""+ unS;
+	public static final String booleanValue = unS + "true|false" + "|" +  doubleValue + unS;  // check IT
+	public static final String any_Value = "(?:"+ intValue + "|" + doubleValue + "|" + charValue + "|" + 
 			StringValue + "|" + booleanValue + ")";
 	public static final String Equality = "=";
 	public static final String initialWay = varName + unS + 
-			(oBr + unS +Equality + unS + (oBr + any_Value + "|" + varName + cBr)) + unS; // check if () are OK 
+			(oBr + "?:" + unS +Equality + unS + (oBr + "?:" + any_Value + "|" + varName + cBr)+ cBr) + "?" + unS; // check if () are OK 
 	
 	//METHODS
 	public static final String methodReturn = "void"; // could be expanded
@@ -40,8 +40,8 @@ public class Syntax {
 	
 	
 	// FINAL
-	public static final String var_Line = unS + (oBr + varModifiers + cBr) + "?" + NS + (oBr + varType + cBr) + "?" + NS + 
-			(oBr +unS +initialWay+ unS + cBr) + unS + (oBr +unS + ","+ unS+ initialWay + cBr) +"*" + unS + endLine + unS; // closes are OK?
+	public static final String var_Line = unS + (oBr + varModifiers + NS + cBr) + "?" +  varType  + "?" + NS + 
+			(oBr +unS +initialWay+ unS + cBr) + unS + (oBr +unS + ","+ unS+ initialWay + cBr) +"*" + unS + endLine + unS;
 			
 	public static final String method_Defined_Line = unS+ methodReturn +
 			NS + methodName + unS + oBr + 

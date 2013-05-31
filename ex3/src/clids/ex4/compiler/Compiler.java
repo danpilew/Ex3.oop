@@ -15,9 +15,7 @@ import clids.ex4.dataTypes.VariableType.Type;
 
 public class Compiler {
 
-	public Compiler() {
-		// TODO Auto-generated constructor stub
-	}
+
 	
 	public static boolean VarDefine(String line ,HashMap<String, Variable> members) 
 			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
@@ -38,14 +36,12 @@ public class Compiler {
 			// the other variables are
 			String firstVar = VarMatcher.group(3).replaceAll(Syntax.unS, "");
 			initialVar(firstVar, isFinal, type, members); 
-			String extraVars =  VarMatcher.group(4).replaceAll(Syntax.unS, "");
-			int variablesNum = VarMatcher.group(4).split(",").length; // +1 (first var) -1 (null before first ,))
-			
-			
-
-			
-			
-			
+			String extraVarsEsp =  VarMatcher.group(4).replaceAll(Syntax.unS, "");
+			//int variablesNum = VarMatcher.group(4).split(",").length; // +1 (first var) -1 (null before first ,))
+			String[] extraVars =  extraVarsEsp.split(",");
+			for (String varDef: extraVars){
+				initialVar(varDef, isFinal, type, members);
+			}
 		}
 				return false;
 	}
