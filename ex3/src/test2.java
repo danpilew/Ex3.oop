@@ -6,8 +6,10 @@ import clids.ex4.main.Parser;
 
 
 public class test2 {
+	int a = 2;
 // Is it Working?
-	public test2(){
+	public test2(boolean a){
+		this.a = 2;
 		
 	}
 	public static void main(String[] args){

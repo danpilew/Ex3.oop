@@ -32,7 +32,7 @@ public class Parser {
 		String[] code = superBlock.getLines();
 		for (int n = 0; n < code.length; n++) {
 
-			boolean isNewVars = Compiler.VarDefine(code[n], members);
+			boolean isNewVars = Compiler.VarDefine(code[n], superBlock);
 
 			if (!isNewVars) {
 				boolean isNewMethod = Compiler.MethDefine(code[n], methods, n);
@@ -46,13 +46,27 @@ public class Parser {
 
 			// ****STEP 2********8
 			for (Method method : methods.values()) {
-
+				Block commands = method.getCommands();
+				compileBlock(commands);
 			}
 		}
 	}
 
-	public void compileBlock(Block block) {
-
+	public void compileBlock(Block commands) {
+		for(int n =0 ; n<commands.getLines().length ; n++){
+			String line = commands.getLines()[n];
+			if(!Compiler.VarDefine(line, commands )){
+				if(!Compiler.methodCall(line, methods, n)){
+					Block ifOrWhile = Compiler.blockDefine(line, methods, n);
+					if(ifOrWhile == null){
+					}else{
+						compileBlock(ifOrWhile);
+						n = n+ifOrWhile.getLines().length;
+					}
+				}
+			}
+		}
+		
 	}
 
 	public Block findBlock(int n) {
