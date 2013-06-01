@@ -20,9 +20,12 @@ public class Compiler {
 	
 	public static boolean VarDefine(String line ,Block currentBlock) 
 			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
+		// get Vars
 		HashMap<String, Variable> localVars = currentBlock.getVariables();
+		// create Pattern & Matcher
 		final Pattern Var_PATTERN = Pattern.compile(Syntax.var_Line);
 		Matcher VarMatcher = Var_PATTERN.matcher(line);
+		// check match
 		if (VarMatcher.matches()){
 			// legal length 
 			if (VarMatcher.end() < line.length()){ // CHECK CONDITION & EXEPTION
@@ -30,13 +33,16 @@ public class Compiler {
 				throw e;
 			}	
 			// is Final
-			boolean isFinal = (VarMatcher.group(0) == "final"); // CHECK ABOUT GROUP IF NULL
+		//	for  (int i =0; i<= 4; i++)   // REMOVE
+			//		System.out.println(i +"  " +VarMatcher.group(i));
+			boolean isFinal = (VarMatcher.group(1) == "final");
 			// type
-			VariableType.Type type = VariableType.valueOf(VarMatcher.group(1));
+			VariableType.Type type = VariableType.valueOf(VarMatcher.group(2));
 			// initial the array of Variables -
 			// 1 - because must be one variable at group (3) 
 			// the other variables are
 			String firstVar = VarMatcher.group(3).replaceAll(Syntax.unS, "");
+		//	System.out.println(firstVar); //REMOVE
 			initialVar(firstVar, isFinal, type, localVars, currentBlock); 
 			String extraVarsEsp =  VarMatcher.group(4).replaceAll(Syntax.unS, "");
 			//int variablesNum = VarMatcher.group(4).split(",").length; // +1 (first var) -1 (null before first ,))
@@ -44,16 +50,21 @@ public class Compiler {
 			for (String varDef: extraVars){
 				initialVar(varDef, isFinal, type, localVars, currentBlock);
 			}
+			return true;
 		}
+		else{
 				return false;
+		}
 	}
 	// Auxiliary method of VarDefine
 	private static void initialVar(String expression, boolean isFinal, Type type, HashMap<String, Variable> localVars, Block currentBlock) throws TypeNotMatchesException, VariableAlreadyExistException {
 		String[] arrExpression = expression.split("=");
+	//	System.out.println("arrExpression"); // REMOVE
+		//for (String exp: arrExpression) // REMOVE
+			//System.out.println(exp);
 		boolean hasValue;
 		String name = arrExpression[0];
 		if (name.equals("")){
-			System.out.println("no name -  WHAT THE FUCK?!"); // REMOVE
 			return;
 		}
 		if (localVars.get(name) != null){
@@ -98,7 +109,7 @@ public class Compiler {
 	private static boolean isValueFitVar(String name, Type type, Block currentBlock) {
 		Variable varCalledName = currentBlock.getVar(name);
 		if (varCalledName != null){
-			if (varCalledName.getType() == type){
+			if (varCalledName.getType() == type && varCalledName.isHasValue()){
 				return true;
 			}
 		}

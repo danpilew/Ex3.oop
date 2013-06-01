@@ -8,6 +8,8 @@ public class VariableType {
 	}
 	
 	public static Type valueOf (String str){
+		if (str == null)
+			return null;
 		return Type.valueOf(str.toUpperCase()); // CHECK IT
 	}
 	
