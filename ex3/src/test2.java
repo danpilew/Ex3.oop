@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import clids.ex4.Exceptions.DuplicateMethodException;
 import clids.ex4.Exceptions.InnvalidMethodException;
 import clids.ex4.Exceptions.TypeNotMatchesException;
+import clids.ex4.Exceptions.illigalVariablesNumberException;
 import clids.ex4.Exceptions.notInitializedVariableException;
 import clids.ex4.compiler.Syntax;
 import clids.ex4.compiler.Compiler;
@@ -49,12 +50,12 @@ public class test2 {
 			e.printStackTrace();
 		}
 		*/
+		System.out.println(Syntax.method_call_Line);
 		HashMap<String, Variable> vars = new HashMap<String, Variable>();
-		Variable var = new Variable("a",Type.BOOLEAN,false,true);
+		Variable var = new Variable("a",Type.BOOLEAN,false,false);
 		vars.put("a", var);
 		Block block = new Block(0, null, null, vars );
 		String line = "if(a&&not)";
-		System.out.println(Syntax.IfWhile_Line);
 		try {
 			System.out.println(isBlockDefine(line, block, 0));
 		} catch (notInitializedVariableException e) {
@@ -89,7 +90,7 @@ public class test2 {
 	}
 	
 	public static boolean methodCall(String line,Block block,
-			HashMap<String, Method> methods, int n) throws InnvalidMethodException, notInitializedVariableException, TypeNotMatchesException {
+			HashMap<String, Method> methods, int n) throws InnvalidMethodException, notInitializedVariableException, TypeNotMatchesException, illigalVariablesNumberException {
 		Pattern metCall = Pattern.compile(Syntax.method_call_Line);
 		Matcher valueMatcher = metCall.matcher(line);
 		if(valueMatcher.matches()){
@@ -101,6 +102,8 @@ public class test2 {
 			String varsline = valueMatcher.group(2);
 			varsline = varsline.replace(Syntax.unS, "");
 			String[] varsNames = varsline.split(",");
+			if(varsNames.length != method.getVariables().length)
+				throw new illigalVariablesNumberException();
 			for(int i = 0; i < varsNames.length; i++){
 				
 				if(!Compiler.isValueFitExpression(varsNames[i], method.getVariables()[i].getType())){

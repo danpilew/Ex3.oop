@@ -5,7 +5,7 @@ public class charAfterEndException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public charAfterEndException() {
-		super("chars after the line end");
+		super("chars after the line ends");
 	}
 
 }
