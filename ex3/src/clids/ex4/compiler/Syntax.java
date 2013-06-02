@@ -17,7 +17,7 @@ public class Syntax {
 	public static final String intValue = unS + "-?\\d+" + unS;
 	public static final String doubleValue = unS + intValue +"(?:\\.\\d)?\\d*+" + unS;
 	public static final String charValue = unS + "." + unS;
-	public static final String StringValue = unS +"\".*+\""+ unS;
+	public static final String StringValue = unS +"\".*\""+ unS;
 	public static final String booleanValue = unS + "true|false" + "|" +  doubleValue + unS;  // check IT
 	public static final String any_Value = "(?:"+ intValue + "|" + doubleValue + "|" + charValue + "|" + 
 			StringValue + "|" + booleanValue + ")";
