@@ -16,10 +16,10 @@ import clids.ex4.dataTypes.VariableType.Type;
 
 public class Compiler {
 	
-	//public static boolean VarPutValue (String line, Block currentBlock){
-		//HashMap<String, Variable> localVars = currentBlock.getVariables();
+	public static boolean VarPutValue (String line, Block currentBlock){
+		HashMap<String, Variable> localVars = currentBlock.getVariables();
 		
-	//}
+	}
 	
 	public static boolean VarDefine(String line ,Block currentBlock) 
 			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
