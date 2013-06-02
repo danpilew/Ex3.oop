@@ -40,17 +40,16 @@ public class Syntax {
 	
 	
 	// FINAL
-	public static final String var_Line = unS + (oBr + varModifiers + NS + cBr) + "?" +  varType + "?" + NS + 
+	public static final String var_Line = unS + (oBr + varModifiers + NS + cBr) + "?" + "(?:" + varType + NS + ")" + "?" +
 			(oBr +unS +initialWay+ unS + cBr) + unS + (oBr + (oBr + ":?" +unS + ","+ unS+ initialWay + cBr) +"*" + cBr)
 					+ unS + endLine + unS;
 	
 	//public static final String var_putValue = unS + //
 			
 	public static final String method_Defined_Line = unS+ methodReturn +
-			NS + methodName + unS + oBr + 
-			(varType + NS + varName) + "?" + unS + 
-			(","+ unS +varType + NS + varName+unS) + "*"
-			+ cBr + unS; // check it - could be final
+			NS + methodName + unS  + "\\(" + 
+			"(" + "(?:" + varType + NS + varName + ")"  + unS + ","+ unS +varType + NS + varName+unS + "*" + ")" + "?"
+			+ "\\)" + unS;
 	
 	public static final String method_call_Line = unS + methodName  + unS +
 			"\\(" + "(" + varName+"|"+ any_Value + unS + "(?:" +","+ unS + varName+"|"+ any_Value  + unS+ ")" + "*" + ")" + "?" + "\\)" + 

@@ -40,7 +40,7 @@ public class Compiler {
 			// is Final
 		//	for  (int i =0; i<= 4; i++)   // REMOVE
 			//		System.out.println(i +"  " +VarMatcher.group(i));
-			boolean isFinal = (VarMatcher.group(1).replaceAll(Syntax.unS, "").equals("final"));
+			boolean isFinal = (!(VarMatcher.group(1)==null));
 			String firstVar = VarMatcher.group(3).replaceAll(Syntax.unS, "");
 			// type
 			if (VarMatcher.group(2)== null){
@@ -71,7 +71,7 @@ public class Compiler {
 				return false;
 		}
 	}
-	private static void actionInMethod(String expression, Block currentBlock) throws illegalExpressionException, notInitializedVariableException {
+	private static void actionInMethod(String expression, Block currentBlock) throws illegalExpressionException, notInitializedVariableException, TypeNotMatchesException {
 		String[] arrExpression = expression.split("=");
 		if(arrExpression.length!=2){
 			illegalExpressionException e = new illegalExpressionException();
@@ -86,9 +86,16 @@ public class Compiler {
 			if (var.isFinal()){
 				throw e;
 			}
-			var.setHasValue(true);
-			currentBlock.update(var.getName());
-		}
+			String value = arrExpression[1];
+			if (valueIsOk(value, var.getType(),  currentBlock)){
+				var.setHasValue(true);
+				currentBlock.update(var.getName());
+			}
+			else{
+				TypeNotMatchesException ex = new TypeNotMatchesException(var.getName(), value);
+				throw ex;
+			}
+					}
 	}
 
 	// Auxiliary method of VarDefine
@@ -112,7 +119,7 @@ public class Compiler {
 		}
 		else if (arrExpression.length==2){
 			String value = arrExpression[1];
-			if (valueIsOk(value, type, localVars, currentBlock)){
+			if (valueIsOk(value, type, currentBlock)){
 				hasValue = true;
 			}
 			else{
@@ -128,7 +135,7 @@ public class Compiler {
 		localVars.put(name, new Variable(name, type, isFinal, hasValue)); 
 	}
 	// Auxiliary method of initialVar
-	private static boolean valueIsOk(String value, Type type, HashMap<String, Variable> localVars, Block currentBlock) {
+	private static boolean valueIsOk(String value, Type type, Block currentBlock) {
 		
 		if (isValueFitExpression(value, type))
 			return true;
