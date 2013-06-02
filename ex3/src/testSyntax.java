@@ -6,9 +6,9 @@ import clids.ex4.compiler.Syntax;
 
 public class testSyntax {
 	public static void main(String[] args){
-		String line = "sss(a, b, c);";
+		String line = "\"sss\"";
 		//String line = "int a = 1, b = 2;";
-		Pattern Var_PATTERN = Pattern.compile(Syntax.method_call_Line);
+		Pattern Var_PATTERN = Pattern.compile(Syntax.StringValue);
 		//System.out.println(Var_PATTERN.toString());
 		Matcher VarMatcher = Var_PATTERN.matcher(line);
 		System.out.println(VarMatcher.matches());
