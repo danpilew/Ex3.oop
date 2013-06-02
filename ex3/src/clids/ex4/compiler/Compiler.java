@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 import clids.ex4.Exceptions.TypeNotMatchesException;
 import clids.ex4.Exceptions.VariableAlreadyExistException;
 import clids.ex4.Exceptions.charAfterEndException;
+import clids.ex4.Exceptions.illegalExpressionException;
+import clids.ex4.Exceptions.invalidActionException;
 import clids.ex4.Exceptions.notInitializedVariableException;
 import clids.ex4.dataTypes.Block;
 import clids.ex4.dataTypes.Method;
@@ -16,13 +18,13 @@ import clids.ex4.dataTypes.VariableType.Type;
 
 public class Compiler {
 	
-	public static boolean VarPutValue (String line, Block currentBlock){
-		HashMap<String, Variable> localVars = currentBlock.getVariables();
+	//public static boolean VarPutValue (String line, Block currentBlock){
+		//HashMap<String, Variable> localVars = currentBlock.getVariables();
 		
-	}
+//	}
 	
-	public static boolean VarDefine(String line ,Block currentBlock) 
-			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
+	public static boolean VarDefine(String line ,Block currentBlock, boolean inMethod) 
+			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException, invalidActionException, illegalExpressionException {
 		// get Vars
 		HashMap<String, Variable> localVars = currentBlock.getVariables();
 		// create Pattern & Matcher
@@ -39,12 +41,21 @@ public class Compiler {
 		//	for  (int i =0; i<= 4; i++)   // REMOVE
 			//		System.out.println(i +"  " +VarMatcher.group(i));
 			boolean isFinal = (VarMatcher.group(1).replaceAll(Syntax.unS, "").equals("final"));
+			String firstVar = VarMatcher.group(3).replaceAll(Syntax.unS, "");
 			// type
+			if (VarMatcher.group(2)== null){
+				if (inMethod){
+					return actionInMethod(firstVar, currentBlock);
+				}
+				else {
+					invalidActionException e = new invalidActionException();
+					throw e;
+				}
+			}
 			VariableType.Type type = VariableType.valueOf(VarMatcher.group(2));
 			// initial the array of Variables -
 			// 1 - because must be one variable at group (3) 
 			// the other variables are
-			String firstVar = VarMatcher.group(3).replaceAll(Syntax.unS, "");
 		//	System.out.println(firstVar); //REMOVE
 			initialVar(firstVar, isFinal, type, localVars, currentBlock); 
 			String extraVarsEsp =  VarMatcher.group(4).replaceAll(Syntax.unS, "");
@@ -59,6 +70,22 @@ public class Compiler {
 				return false;
 		}
 	}
+	private static boolean actionInMethod(String expression, Block currentBlock) throws illegalExpressionException {
+		String[] arrExpression = expression.split("=");
+		if(arrExpression.length!=2){
+			illegalExpressionException e = new illegalExpressionException();
+			throw e;
+		}
+		else{
+			Variable var = currentBlock.getVar(arrExpression[0]);
+			if (var == null){
+				notInitializedVariableException e = new notInitializedVariableException(arrExpression[0]);
+			}
+			
+		}
+		return false;
+	}
+
 	// Auxiliary method of VarDefine
 	private static void initialVar(String expression, boolean isFinal, Type type, HashMap<String, Variable> localVars, Block currentBlock) throws TypeNotMatchesException, VariableAlreadyExistException {
 		String[] arrExpression = expression.split("=");
