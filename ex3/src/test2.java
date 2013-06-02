@@ -38,7 +38,7 @@ public class test2 {
 		Method fooMeth = new Method(methVars, "foo");
 		HashMap<String, Method> meths = new HashMap<String, Method>();
 		meths.put("foo", fooMeth);
-		String line = "foo(2,\"shalala\",13.2);";
+		String line = "foo(2,\"shalala\") ;";
 		System.out.println(Syntax.StringValue);
 		System.out.println(Syntax.method_call_Line);
 		try {

@@ -54,7 +54,7 @@ public class Syntax {
 	
 	public static final String method_call_Line = unS + methodName  + unS +
 			"\\(" + "(" + varName+"|"+ any_Value + unS + "(?:" +","+ unS + varName+"|"+ any_Value  + unS+ ")" + "*" + ")" + "?" + "\\)" + 
-			endLine + unS;
+			unS+ endLine + unS;
 	
 	public static final String IfWhile_Line = IfWhile + unS + condition + unS; 
 	
