@@ -48,7 +48,8 @@ public class Syntax {
 			
 	public static final String method_Defined_Line = unS+ methodReturn +
 			NS + methodName + unS  + "\\(" + 
-			"(" + "(?:" + varType + NS + varName + ")"  + unS + ","+ unS +varType + NS + varName+unS + "*" + ")" + "?"
+			"(" + "(?:" + varType + NS + varName + unS + ")" +
+			"(?:" + unS + ","+ unS +varType + NS + varName+ unS +")"+ "*" + ")" + "?"
 			+ "\\)" + unS;
 	
 	public static final String method_call_Line = unS + methodName  + unS +

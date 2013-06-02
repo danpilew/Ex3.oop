@@ -18,11 +18,9 @@ import clids.ex4.dataTypes.VariableType.Type;
 
 public class Compiler {
 	
-	//public static boolean VarPutValue (String line, Block currentBlock){
-		//HashMap<String, Variable> localVars = currentBlock.getVariables();
-		
-//	}
 	
+	
+	// VARIABLE DEFINE
 	public static boolean VarDefine(String line ,Block currentBlock, boolean inMethod) 
 			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException, invalidActionException, illegalExpressionException {
 		// get Vars
@@ -183,11 +181,29 @@ public class Compiler {
 	
 
 
-	public static boolean MethDefine(String string,
-			HashMap<String, Method> methods, int n) {
-		// TODO Auto-generated method stub
-		return false;
+	// METHOD DEFINE
+	public static Method MethDefine(String line, HashMap<String, Method> methods) {
+		// create Pattern & Matcher
+		final Pattern METHOD_DEFINE_PATTERN = Pattern.compile(Syntax.method_Defined_Line);
+		Matcher VarMatcher = METHOD_DEFINE_PATTERN.matcher(line);
+		
+		if (VarMatcher.matches()){
+			
+		}
+		
+		
+
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static Block blockDefine(String line,
 			HashMap<String, Method> methods, int n) {
 		// TODO Auto-generated method stub
