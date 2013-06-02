@@ -46,6 +46,13 @@ public class Block {
 		}
 		return ret;
 	}
+
+	public void update(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 
 }

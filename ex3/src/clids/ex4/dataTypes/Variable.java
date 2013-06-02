@@ -5,15 +5,23 @@ public class Variable {
 	private final String name;
 	private final VariableType.Type type;
 	private final boolean isFinal;
-	private final boolean hasValue;
+	private boolean hasValue;
 	
 	
 	
+	/**
+	 * @param hasValue the hasValue to set
+	 */
+
 	public Variable(String name, VariableType.Type type, boolean isFinal,
 			boolean hasValue) {
 		this.name = name;
 		this.type = type;
 		this.isFinal = isFinal;
+		this.hasValue = hasValue;
+	}
+	
+	public void setHasValue(boolean hasValue) {
 		this.hasValue = hasValue;
 	}
 	

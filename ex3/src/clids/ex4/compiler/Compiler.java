@@ -45,7 +45,8 @@ public class Compiler {
 			// type
 			if (VarMatcher.group(2)== null){
 				if (inMethod){
-					return actionInMethod(firstVar, currentBlock);
+					actionInMethod(firstVar, currentBlock);
+					return true;
 				}
 				else {
 					invalidActionException e = new invalidActionException();
@@ -70,21 +71,24 @@ public class Compiler {
 				return false;
 		}
 	}
-	private static boolean actionInMethod(String expression, Block currentBlock) throws illegalExpressionException {
+	private static void actionInMethod(String expression, Block currentBlock) throws illegalExpressionException, notInitializedVariableException {
 		String[] arrExpression = expression.split("=");
 		if(arrExpression.length!=2){
 			illegalExpressionException e = new illegalExpressionException();
 			throw e;
 		}
 		else{
+			notInitializedVariableException e = new notInitializedVariableException(arrExpression[0]);
 			Variable var = currentBlock.getVar(arrExpression[0]);
 			if (var == null){
-				notInitializedVariableException e = new notInitializedVariableException(arrExpression[0]);
-				throw e
+				throw e;
 			}
-			
+			if (var.isFinal()){
+				throw e;
+			}
+			var.setHasValue(true);
+			currentBlock.update(var.getName());
 		}
-		return false;
 	}
 
 	// Auxiliary method of VarDefine
