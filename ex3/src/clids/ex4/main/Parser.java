@@ -56,6 +56,7 @@ public class Parser {
 		for(int n =0 ; n<commands.getLines().length ; n++){
 			String line = commands.getLines()[n];
 			if(!Compiler.VarDefine(line, commands )){
+				//Var changed
 				if(!Compiler.methodCall(line, methods, n)){
 					Block ifOrWhile = Compiler.blockDefine(line, methods, n);
 					if(ifOrWhile == null){
