@@ -6,7 +6,7 @@ import clids.ex4.compiler.Syntax;
 
 public class testSyntax {
 	public static void main(String[] args){
-		String line = "void aaa(char a, int b, int g)";
+		String line = "void aaa(final char a, final int b, int g)";
 		//String line = "int a = 1, b = 2;";
 		Pattern Var_PATTERN = Pattern.compile(Syntax.method_Defined_Line);
 		//System.out.println(Var_PATTERN.toString());

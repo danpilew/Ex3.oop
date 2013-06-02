@@ -51,11 +51,10 @@ public class Compiler {
 					throw e;
 				}
 			}
-			VariableType.Type type = VariableType.valueOf(VarMatcher.group(2));
+			VariableType.Type type = VariableType.valueOf(VarMatcher.group(2).replaceAll(Syntax.unS, ""));
 			// initial the array of Variables -
 			// 1 - because must be one variable at group (3) 
 			// the other variables are
-		//	System.out.println(firstVar); //REMOVE
 			initialVar(firstVar, isFinal, type, localVars, currentBlock); 
 			String extraVarsEsp =  VarMatcher.group(4).replaceAll(Syntax.unS, "");
 			//int variablesNum = VarMatcher.group(4).split(",").length; // +1 (first var) -1 (null before first ,))
@@ -87,7 +86,7 @@ public class Compiler {
 			String value = arrExpression[1];
 			if (valueIsOk(value, var.getType(),  currentBlock)){
 				var.setHasValue(true);
-				currentBlock.update(var.getName());
+				currentBlock.update(var);
 			}
 			else{
 				TypeNotMatchesException ex = new TypeNotMatchesException(var.getName(), value);
@@ -203,21 +202,41 @@ public class Compiler {
 		else{
 			String methName = METHMatcher.group(1).replaceAll(Syntax.unS, "");
 			String[] Variables = METHMatcher.group(2).split(",");
-			
+			// Variables[i] is look like : type name
 			Variable[] VarsInMeth = new Variable[Variables.length];
+			
 			for (int i = 0; i<=VarsInMeth.length; i++){
 				Variable var = defineVarForMethod(Variables[i]);
 				VarsInMeth[i] = var;
 			}	
+			return new Method(VarsInMeth, methName);
 		}
 	}
 	
 	
-	 static Variable defineVarForMethod(String string) {
-		// TODO Auto-generated method stub
+	 private static Variable defineVarForMethod(String typePLUSvar) {
+		// create Pattern & Matcher
+			final Pattern varInMeth_PATTERN = Pattern.compile(Syntax.method_Defined_Line);
+			Matcher varInMethMatcher = varInMeth_PATTERN.matcher(typePLUSvar);
+			if(!varInMethMatcher.matches()){
+				System.out.println("WTF - should fix but not"); // REMOVE
+			}
+			else {
+				boolean isFinal = (!(varInMethMatcher.group(1)==null));
+				String name = varInMethMatcher.group(2).replaceAll(Syntax.unS, "");
+				VariableType.Type type = VariableType.valueOf(varInMethMatcher.group(2).replaceAll(Syntax.unS, ""));
+				boolean hasValue = true;
+				Variable newVar = new Variable(name, type, isFinal, hasValue);
+				return newVar;
+			}
 		return null;
 	}
-	public static Block blockDefine(String line,
+	
+	 
+	 
+	 
+	 
+	 public static Block blockDefine(String line,
 			HashMap<String, Method> methods, int n) {
 		// TODO Auto-generated method stub
 		return null;

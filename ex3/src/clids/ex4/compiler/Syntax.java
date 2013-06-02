@@ -31,6 +31,7 @@ public class Syntax {
 	public static final String methodReturn = "void"; // could be expanded
 	public static final String methodName = "([a-zA-Z]\\w*)"; //
 	public static final String Return = "return"; 
+	public static final String typeAndVar =unS + "(?:" + varModifiers + NS +")"+ "?" + unS + "(" + varType + ")" + unS + "(" + varName + ")" + unS;
 	
 	//IF, WHILE BLOCKS
 	public static final String IfWhile = "(if|while)";
@@ -50,8 +51,8 @@ public class Syntax {
 			
 	public static final String method_Defined_Line = unS+ methodReturn +
 			NS + methodName + unS  + "\\(" + 
-			"(" + "(?:" + varType + NS + varName + unS + ")" +
-			"(?:" + unS + ","+ unS +varType + NS + varName+ unS +")"+ "*" + ")" + "?"
+			"(" + unS + "(?:" + "(?:" + varModifiers + NS +")"+ "?"  + varType + NS + varName + unS + ")" +
+			"(?:" + unS + ","+ unS + "(?:" + varModifiers + NS +")"+ "?" +varType + NS + varName+ unS +")"+ "*" + ")" + "?"
 			+ "\\)" + unS;
 	
 	public static final String method_call_Line = unS + methodName  + unS +
