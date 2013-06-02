@@ -50,27 +50,38 @@ public class test2 {
 		}
 		*/
 		HashMap<String, Variable> vars = new HashMap<String, Variable>();
-		Variable var = new Variable("a",Type.INT,false,true);
+		Variable var = new Variable("a",Type.BOOLEAN,false,true);
 		vars.put("a", var);
 		Block block = new Block(0, null, null, vars );
+		String line = "if(a&&not)";
+		System.out.println(Syntax.IfWhile_Line);
+		try {
+			System.out.println(isBlockDefine(line, block, 0));
+		} catch (notInitializedVariableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TypeNotMatchesException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public static boolean isBlockDefine(String line,
 			Block currentBlock, int n) throws notInitializedVariableException, TypeNotMatchesException {
-		Pattern ifOrWhile = Pattern.compile(Syntax.condition);
+		Pattern ifOrWhile = Pattern.compile(Syntax.IfWhile_Line);
 		Matcher ifOrWhileMatcher = ifOrWhile.matcher(line);
 		if(ifOrWhileMatcher.matches()){
-			String condition = ifOrWhileMatcher.group(1);
-			for(int i = 0; i<2 || condition == null; i++){
+			String condition = ifOrWhileMatcher.group(2);
+			for(int i = 0; i<2 && condition != null; i++){
 				if(!Compiler.isValueFitExpression(condition,Type.BOOLEAN)){
 					Variable var = currentBlock.getVar(condition);
-					if(var == null || var.isHasValue()){
+					if(var == null || !var.isHasValue()){
 						throw new notInitializedVariableException(condition);
 					}
 					if(var.getType() != Type.BOOLEAN){
 						throw new TypeNotMatchesException(condition, "if or while condition");
 					}
 				}
-				condition = ifOrWhileMatcher.group(3);
+				condition = ifOrWhileMatcher.group(5);
 			}
 			return true;
 		}

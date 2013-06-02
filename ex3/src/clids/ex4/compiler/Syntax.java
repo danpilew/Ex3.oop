@@ -35,7 +35,7 @@ public class Syntax {
 	public static final String AndOR = "(&&|\\|\\|)";
 	public static final String legalInCondition = booleanValue + "|" + varName;
 	public static final String condition = unS + "\\(" + unS + "(" + legalInCondition + ")" +
-		"(" +(unS + AndOR + unS + "(" + legalInCondition + ")") + ")" + "?" + unS + "\\)" + unS; // booleanValue included double
+		"(" +(unS + AndOR + unS + "(" +legalInCondition+")") + ")" + "?" + unS + "\\)" + unS; // booleanValue included double
 	
 	
 	
