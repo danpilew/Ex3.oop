@@ -31,14 +31,11 @@ public class test2 {
 		Variable var = new Variable("a",Type.INT,false,true);
 		vars.put("a", var);
 		Block block = new Block(0, null, null, vars );
-		Variable[] methVars = new Variable[3];
-		methVars[0] = new Variable("b", Type.INT, true, true);
-		methVars[1] = new Variable("c", Type.STRING, true, true);
-		methVars[2] = new Variable("d", Type.DOUBLE, true, true);
+		Variable[] methVars = new Variable[0];
 		Method fooMeth = new Method(methVars, "foo");
 		HashMap<String, Method> meths = new HashMap<String, Method>();
 		meths.put("foo", fooMeth);
-		String line = "foo(2,\"shalala\") ;";
+		String line = "foo() ;";
 		System.out.println(Syntax.StringValue);
 		System.out.println(Syntax.method_call_Line);
 		try {
@@ -108,6 +105,11 @@ public class test2 {
 				throw new InnvalidMethodException(newMethName);
 			Method method = methods.get(newMethName);
 			String varsline = valueMatcher.group(2);
+			if(varsline == null){
+				if(method.getVariables().length == 0)
+					return true;
+				throw new illigalVariablesNumberException();
+			}
 			varsline = varsline.replace(Syntax.unS, "");
 			String[] varsNames = varsline.split(",");
 			if(varsNames.length != method.getVariables().length)
