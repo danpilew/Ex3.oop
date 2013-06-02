@@ -40,9 +40,11 @@ public class Syntax {
 	
 	
 	// FINAL
-	public static final String var_Line = unS + (oBr + varModifiers + NS + cBr) + "?" +  varType  + "?" + NS + 
+	public static final String var_Line = unS + (oBr + varModifiers + NS + cBr) + "?" +  varType + NS + 
 			(oBr +unS +initialWay+ unS + cBr) + unS + (oBr + (oBr + ":?" +unS + ","+ unS+ initialWay + cBr) +"*" + cBr)
 					+ unS + endLine + unS;
+	
+	//public static final String var_putValue = unS + //
 			
 	public static final String method_Defined_Line = unS+ methodReturn +
 			NS + methodName + unS + oBr + 

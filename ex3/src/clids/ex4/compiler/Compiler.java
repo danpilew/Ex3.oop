@@ -15,8 +15,11 @@ import clids.ex4.dataTypes.VariableType.Type;
 
 
 public class Compiler {
-
-
+	
+	//public static boolean VarPutValue (String line, Block currentBlock){
+		//HashMap<String, Variable> localVars = currentBlock.getVariables();
+		
+	//}
 	
 	public static boolean VarDefine(String line ,Block currentBlock) 
 			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
@@ -35,7 +38,7 @@ public class Compiler {
 			// is Final
 		//	for  (int i =0; i<= 4; i++)   // REMOVE
 			//		System.out.println(i +"  " +VarMatcher.group(i));
-			boolean isFinal = (VarMatcher.group(1) == "final");
+			boolean isFinal = (VarMatcher.group(1).replaceAll(Syntax.unS, "").equals("final"));
 			// type
 			VariableType.Type type = VariableType.valueOf(VarMatcher.group(2));
 			// initial the array of Variables -
@@ -138,6 +141,7 @@ public class Compiler {
 		else
 			return false;
 	}
+	
 
 
 	public static boolean MethDefine(String string,
