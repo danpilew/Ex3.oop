@@ -11,6 +11,8 @@ import java.util.HashMap;
 import clids.ex4.Exceptions.TypeNotMatchesException;
 import clids.ex4.Exceptions.VariableAlreadyExistException;
 import clids.ex4.Exceptions.charAfterEndException;
+import clids.ex4.Exceptions.illegalExpressionException;
+import clids.ex4.Exceptions.invalidActionException;
 import clids.ex4.Exceptions.notInitializedVariableException;
 import clids.ex4.compiler.Compiler;
 import clids.ex4.compiler.Syntax;
@@ -22,23 +24,26 @@ public class Parser {
 	HashMap<String, Variable> members = new HashMap<String, Variable>();
 	HashMap<String, Method> methods = new HashMap<String, Method>();
 	Block superBlock;
+	private final boolean inMethod = true;
 
 	public Parser(File file) throws IOException {
 		superBlock = new Block(0, getStringFromFile(file), null, members);
 	}
 
 	public void parse() throws TypeNotMatchesException,
-			notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
+			notInitializedVariableException, charAfterEndException, VariableAlreadyExistException, invalidActionException, illegalExpressionException {
 		String[] code = superBlock.getLines();
 		for (int n = 0; n < code.length; n++) {
-
-			boolean isNewVars = Compiler.VarDefine(code[n], superBlock);
+			if(code[n].charAt(0) == '/' && code[n].charAt(1) == '/'){
+				continue;
+			}
+			boolean isNewVars = Compiler.VarDefine(code[n], superBlock, !inMethod);
 
 			if (!isNewVars) {
-				boolean isNewMethod = Compiler.MethDefine(code[n], methods, n);
-				if (!isNewMethod) {
+				Method newMethod = Compiler.MethDefine(code[n], methods);
+				if (newMethod == null) {
+					throw new illegalExpressionException();
 				}
-				// throw Exception
 				// Skips the Method
 			//	n = n + newMethod.getCommands().getLines().length - 1;
 				// HANDEL THIS
@@ -52,14 +57,18 @@ public class Parser {
 		}
 	}
 
-	public void compileBlock(Block commands) throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException {
+	public void compileBlock(Block commands) throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException, invalidActionException, illegalExpressionException {
 		for(int n =0 ; n<commands.getLines().length ; n++){
 			String line = commands.getLines()[n];
-			if(!Compiler.VarDefine(line, commands )){
+			if(line.charAt(0) == '/' && line.charAt(1) == '/'){
+				continue;
+			}
+			if(!Compiler.VarDefine(line, commands , inMethod)){
 				//Var changed
 				if(!Compiler.methodCall(line, methods, n)){
 					Block ifOrWhile = Compiler.blockDefine(line, methods, n);
 					if(ifOrWhile == null){
+						throw new illegalExpressionException();
 					}else{
 						compileBlock(ifOrWhile);
 						n = n+ifOrWhile.getLines().length;

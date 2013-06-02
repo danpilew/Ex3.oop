@@ -179,6 +179,16 @@ public class Compiler {
 			return false;
 	}
 	
+	public static boolean isEmptyLine(String line){
+		Pattern emptyLine = Pattern.compile(Syntax.unS);
+		Matcher emptyLineMatcher = emptyLine.matcher(line);
+		return emptyLineMatcher.matches();
+	}
+	public static boolean isCommentLine(String line){
+		Pattern commentLine = Pattern.compile(Syntax.commentLine);
+		Matcher commentLineMatcher = commentLine.matcher(line);
+		return commentLineMatcher.matches();
+	}
 
 
 	// METHOD DEFINE

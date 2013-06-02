@@ -47,9 +47,19 @@ public class Block {
 		return ret;
 	}
 
-	public void update(String name) {
-		// TODO Auto-generated method stub
-		
+	public void update(Variable var) {
+		Block curBlock = this;
+		if(curBlock.getVariables().get(var.getName()) != null){
+			curBlock.getVariables().remove(var.getName()); 
+			curBlock.getVariables().put(var.getName(), var);
+		}
+		while(curBlock.getFatherBlock() != null){
+			curBlock = curBlock.getFatherBlock();
+			if(curBlock.getVariables().get(var.getName()) != null){
+				curBlock.getVariables().remove(var.getName()); 
+				curBlock.getVariables().put(var.getName(), var);
+			}
+		}		
 	}
 
 

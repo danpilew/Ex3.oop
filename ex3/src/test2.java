@@ -1,3 +1,4 @@
+import java.beans.MethodDescriptor;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -38,21 +39,7 @@ public class test2 {
 		String line = "foo() ;";
 		System.out.println(Syntax.StringValue);
 		System.out.println(Syntax.method_call_Line);
-		try {
-				System.out.println(methodCall(line, block, meths, 0));
-		} catch (illigalVariablesNumberException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InnvalidMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (notInitializedVariableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TypeNotMatchesException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println(methDefine("", null, 0));
 		/*
 		System.out.println(Syntax.method_call_Line);
 		HashMap<String, Variable> vars = new HashMap<String, Variable>();
@@ -131,5 +118,5 @@ public class test2 {
 		return false;
 	}
 	
-	
+
 }
