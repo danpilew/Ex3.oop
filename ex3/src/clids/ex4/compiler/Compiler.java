@@ -185,25 +185,28 @@ public class Compiler {
 	public static Method MethDefine(String line, HashMap<String, Method> methods) {
 		// create Pattern & Matcher
 		final Pattern METHOD_DEFINE_PATTERN = Pattern.compile(Syntax.method_Defined_Line);
-		Matcher VarMatcher = METHOD_DEFINE_PATTERN.matcher(line);
+		Matcher METHMatcher = METHOD_DEFINE_PATTERN.matcher(line);
 		
-		if (VarMatcher.matches()){
+		if (!METHMatcher.matches())
+			return null;
+		
+		else{
+			String methName = METHMatcher.group(1).replaceAll(Syntax.unS, "");
+			String[] Variables = METHMatcher.group(2).split(",");
 			
+			Variable[] VarsInMeth = new Variable[Variables.length];
+			for (int i = 0; i<=VarsInMeth.length; i++){
+				Variable var = defineVarForMethod(Variables[i]);
+				VarsInMeth[i] = var;
+			}	
 		}
-		
-		
-
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	 static Variable defineVarForMethod(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	public static Block blockDefine(String line,
 			HashMap<String, Method> methods, int n) {
 		// TODO Auto-generated method stub
