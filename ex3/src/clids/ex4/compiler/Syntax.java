@@ -27,7 +27,7 @@ public class Syntax {
 	
 	//METHODS
 	public static final String methodReturn = "void"; // could be expanded
-	public static final String methodName = "[a-zA-Z](\\w)*"; //
+	public static final String methodName = "([a-zA-Z]\\w*)"; //
 	public static final String Return = "return"; 
 	
 	//IF, WHILE BLOCKS
@@ -53,7 +53,7 @@ public class Syntax {
 			+ cBr + unS; // check it - could be final
 	
 	public static final String method_call_Line = unS + methodName  + unS +
-			"\\(" + "(" + varName + unS + "(?:" +","+ unS + varName + unS+ ")" + "*" + ")" + "?" + "\\)" + 
+			"\\(" + "(" + varName+"|"+ any_Value + unS + "(?:" +","+ unS + varName+"|"+ any_Value  + unS+ ")" + "*" + ")" + "?" + "\\)" + 
 			endLine + unS;
 	
 	public static final String IfWhile_Line = IfWhile + unS + condition + unS; 
