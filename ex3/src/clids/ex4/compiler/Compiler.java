@@ -119,7 +119,7 @@ public class Compiler {
 		return false;
 	}
 	// Auxiliary method of valueIsOk
-	private static boolean isValueFitExpression(String value, Type type) {
+	public static boolean isValueFitExpression(String value, Type type) {
 		String valueType = null;
 		switch (type) {
 		case INT: valueType = Syntax.intValue;
