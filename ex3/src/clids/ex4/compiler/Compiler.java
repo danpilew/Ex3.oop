@@ -80,6 +80,7 @@ public class Compiler {
 			Variable var = currentBlock.getVar(arrExpression[0]);
 			if (var == null){
 				notInitializedVariableException e = new notInitializedVariableException(arrExpression[0]);
+				throw e
 			}
 			
 		}
