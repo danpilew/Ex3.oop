@@ -26,19 +26,26 @@ public class test2 {
 		
 	}
 	public static void main(String[] args){
-		/*
+		
 		HashMap<String, Variable> vars = new HashMap<String, Variable>();
 		Variable var = new Variable("a",Type.INT,false,true);
 		vars.put("a", var);
 		Block block = new Block(0, null, null, vars );
-		Variable[] methVars = new Variable[1];
+		Variable[] methVars = new Variable[3];
 		methVars[0] = new Variable("b", Type.INT, true, true);
+		methVars[1] = new Variable("c", Type.STRING, true, true);
+		methVars[2] = new Variable("d", Type.DOUBLE, true, true);
 		Method fooMeth = new Method(methVars, "foo");
 		HashMap<String, Method> meths = new HashMap<String, Method>();
 		meths.put("foo", fooMeth);
-		String line = "foo(a);";
+		String line = "foo(2,\"shalala\",13.2);";
+		System.out.println(Syntax.StringValue);
+		System.out.println(Syntax.method_call_Line);
 		try {
-			System.out.println(methodCall(line, block, meths, 0));
+				System.out.println(methodCall(line, block, meths, 0));
+		} catch (illigalVariablesNumberException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (InnvalidMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,7 +56,7 @@ public class test2 {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		*/
+		/*
 		System.out.println(Syntax.method_call_Line);
 		HashMap<String, Variable> vars = new HashMap<String, Variable>();
 		Variable var = new Variable("a",Type.BOOLEAN,false,false);
@@ -65,6 +72,7 @@ public class test2 {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 	}
 	public static boolean isBlockDefine(String line,
 			Block currentBlock, int n) throws notInitializedVariableException, TypeNotMatchesException {
