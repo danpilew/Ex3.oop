@@ -37,8 +37,6 @@ public class Compiler {
 				throw e;
 			}	
 			// is Final
-		//	for  (int i =0; i<= 4; i++)   // REMOVE
-			//		System.out.println(i +"  " +VarMatcher.group(i));
 			boolean isFinal = (!(VarMatcher.group(1)==null));
 			String firstVar = VarMatcher.group(3).replaceAll(Syntax.unS, "");
 			// type
@@ -58,7 +56,6 @@ public class Compiler {
 			// the other variables are
 			initialVar(firstVar, isFinal, type, localVars, currentBlock); 
 			String extraVarsEsp =  VarMatcher.group(4).replaceAll(Syntax.unS, "");
-			//int variablesNum = VarMatcher.group(4).split(",").length; // +1 (first var) -1 (null before first ,))
 			String[] extraVars =  extraVarsEsp.split(",");
 			for (String varDef: extraVars){
 				initialVar(varDef, isFinal, type, localVars, currentBlock);
@@ -97,7 +94,7 @@ public class Compiler {
 	}
 
 	// Auxiliary method of VarDefine
-	private static void initialVar(String expression, boolean isFinal, Type type, HashMap<String, Variable> localVars, Block currentBlock) throws TypeNotMatchesException, VariableAlreadyExistException {
+	private static void initialVar(String expression, boolean isFinal, Type type, HashMap<String, Variable> localVars, Block currentBlock) throws TypeNotMatchesException, VariableAlreadyExistException, notInitializedVariableException {
 		String[] arrExpression = expression.split("=");
 	//	System.out.println("arrExpression"); // REMOVE
 		//for (String exp: arrExpression) // REMOVE
@@ -126,10 +123,12 @@ public class Compiler {
 			}
 		}
 		else{
-			System.out.println("split by = > 2 - WTF?!");
 			return;
 		}
-		
+		if (isFinal && !hasValue){
+			notInitializedVariableException e = new notInitializedVariableException(name);
+			throw e;
+		}
 		localVars.put(name, new Variable(name, type, isFinal, hasValue)); 
 	}
 	// Auxiliary method of initialVar
@@ -214,7 +213,7 @@ public class Compiler {
 			// Variables[i] is look like : type name
 			Variable[] VarsInMeth = new Variable[Variables.length];
 			
-			for (int i = 0; i<=VarsInMeth.length; i++){
+			for (int i = 0; i<VarsInMeth.length; i++){
 				Variable var = defineVarForMethod(Variables[i]);
 				VarsInMeth[i] = var;
 			}	
