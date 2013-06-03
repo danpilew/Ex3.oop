@@ -10,7 +10,7 @@ public class Syntax {
 	public static final String closeBlock = "}"; //closeBlock
 	public static final String endLine = ";";
 	public static final String commentLine = "//.*";
-
+	public static final String returnLine = unS + "return" + unS + endLine;
 	
 	// VARIABELES
 	public static final String varType = "(int|double|String|boolean|char)";

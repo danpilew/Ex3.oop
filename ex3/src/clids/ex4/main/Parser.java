@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import clids.ex4.Exceptions.InnvalidMethodException;
+import clids.ex4.Exceptions.MethodAlreadyExistException;
 import clids.ex4.Exceptions.TypeNotMatchesException;
 import clids.ex4.Exceptions.VariableAlreadyExistException;
 import clids.ex4.Exceptions.charAfterEndException;
 import clids.ex4.Exceptions.illegalExpressionException;
+import clids.ex4.Exceptions.illigalVariablesNumberException;
 import clids.ex4.Exceptions.invalidActionException;
 import clids.ex4.Exceptions.notInitializedVariableException;
 import clids.ex4.compiler.Compiler;
@@ -31,10 +34,10 @@ public class Parser {
 	}
 
 	public void parse() throws TypeNotMatchesException,
-			notInitializedVariableException, charAfterEndException, VariableAlreadyExistException, invalidActionException, illegalExpressionException {
+			notInitializedVariableException, charAfterEndException, VariableAlreadyExistException, invalidActionException, illegalExpressionException, MethodAlreadyExistException, InnvalidMethodException, illigalVariablesNumberException {
 		String[] code = superBlock.getLines();
 		for (int n = 0; n < code.length; n++) {
-			if(code[n].charAt(0) == '/' && code[n].charAt(1) == '/'){
+			if(Compiler.isEmptyLine(code[n]) || Compiler.isCommentLine(code[n])){
 				continue;
 			}
 			boolean isNewVars = Compiler.VarDefine(code[n], superBlock, !inMethod);
@@ -44,34 +47,38 @@ public class Parser {
 				if (newMethod == null) {
 					throw new illegalExpressionException();
 				}
-				// Skips the Method
-			//	n = n + newMethod.getCommands().getLines().length - 1;
-				// HANDEL THIS
+				newMethod.setBlock(findBlock(n, superBlock));
+				n = n + newMethod.getCommands().getLines().length;
+				
 			}
 
-			// ****STEP 2********8
+			// ****STEP 2********
 			for (Method method : methods.values()) {
+				if(checkReturnStatement(method)){
+					//Throw Exceptions
+				}
 				Block commands = method.getCommands();
 				compileBlock(commands);
 			}
 		}
 	}
 
-	public void compileBlock(Block commands) throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException, invalidActionException, illegalExpressionException {
+	public void compileBlock(Block commands) throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException, invalidActionException, illegalExpressionException, InnvalidMethodException, illigalVariablesNumberException {
 		for(int n =0 ; n<commands.getLines().length ; n++){
 			String line = commands.getLines()[n];
-			if(line.charAt(0) == '/' && line.charAt(1) == '/'){
+			if(Compiler.isCommentLine(line) || Compiler.isEmptyLine(line)){
 				continue;
 			}
 			if(!Compiler.VarDefine(line, commands , inMethod)){
 				//Var changed
-				if(!Compiler.methodCall(line, methods, n)){
-					Block ifOrWhile = Compiler.blockDefine(line, methods, n);
-					if(ifOrWhile == null){
+				if(!Compiler.methodCall(line, commands, methods)){
+					boolean ifOrWhile = Compiler.isBlockDefine(line, superBlock, n);
+					if(!ifOrWhile){
 						throw new illegalExpressionException();
 					}else{
-						compileBlock(ifOrWhile);
-						n = n+ifOrWhile.getLines().length;
+						Block ifOrWhileBlock = findBlock(n, commands );
+						compileBlock(ifOrWhileBlock);
+						n = n+ifOrWhileBlock.getLines().length;
 					}
 				}
 			}
@@ -79,7 +86,7 @@ public class Parser {
 		
 	}
 
-	public Block findBlock(int n) {
+	public Block findBlock(int n, Block fatherBlock) {
 		String[] code = superBlock.getLines();
 		int lineNumber = n;
 		int blockCounter = 0;
@@ -104,7 +111,7 @@ public class Parser {
 				if (line.charAt(i) == Syntax.openBlock.charAt(0)) {
 					blockCounter++;
 				}
-				if (line.charAt(i) == Syntax.closeBlock.charAt(0)) {
+				if (line.charAt(0) == Syntax.closeBlock.charAt(0)) {
 					blockCounter--;
 				}
 			}
@@ -117,10 +124,24 @@ public class Parser {
 		// removes everyThing that is after the '}'
 		blockCode[blockCode.length - 1] = blockCode[blockCode.length - 1]
 				.substring(0, blockCode.length - 1);
-		return new Block(n, blockCode, null, null);
+		return new Block(n, blockCode, fatherBlock, new HashMap<String, Variable>());
 
 	}
-
+	private boolean checkReturnStatement(Method method){
+		String[] commands = method.getCommands().getLines();
+		
+		for(int i = commands.length-1;i > 1;i--){
+			String line = commands[i];
+			if(!Compiler.isCommentLine(line) && !Compiler.isEmptyLine(line)){
+				if(Compiler.isReturnLine(line)){
+					return true;
+				}
+				break;
+			}
+		}
+		return false;
+		
+	}
 	private static String[] getStringFromFile(File code) throws IOException {
 		String[] ret = null;
 		try (BufferedReader br = new BufferedReader(new FileReader(code))) {

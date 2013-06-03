@@ -39,7 +39,6 @@ public class test2 {
 		String line = "foo() ;";
 		System.out.println(Syntax.StringValue);
 		System.out.println(Syntax.method_call_Line);
-		System.out.println(methDefine("", null, 0));
 		/*
 		System.out.println(Syntax.method_call_Line);
 		HashMap<String, Variable> vars = new HashMap<String, Variable>();
@@ -58,65 +57,8 @@ public class test2 {
 		}
 		*/
 	}
-	public static boolean isBlockDefine(String line,
-			Block currentBlock, int n) throws notInitializedVariableException, TypeNotMatchesException {
-		Pattern ifOrWhile = Pattern.compile(Syntax.IfWhile_Line);
-		Matcher ifOrWhileMatcher = ifOrWhile.matcher(line);
-		if(ifOrWhileMatcher.matches()){
-			String condition = ifOrWhileMatcher.group(2);
-			for(int i = 0; i<2 && condition != null; i++){
-				if(!Compiler.isValueFitExpression(condition,Type.BOOLEAN)){
-					Variable var = currentBlock.getVar(condition);
-					if(var == null || !var.isHasValue()){
-						throw new notInitializedVariableException(condition);
-					}
-					if(var.getType() != Type.BOOLEAN){
-						throw new TypeNotMatchesException(condition, "if or while condition");
-					}
-				}
-				condition = ifOrWhileMatcher.group(5);
-			}
-			return true;
-		}
-		return false;
-	}
 	
-	public static boolean methodCall(String line,Block block,
-			HashMap<String, Method> methods, int n) throws InnvalidMethodException, notInitializedVariableException, TypeNotMatchesException, illigalVariablesNumberException {
-		Pattern metCall = Pattern.compile(Syntax.method_call_Line);
-		Matcher valueMatcher = metCall.matcher(line);
-		if(valueMatcher.matches()){
-			
-			String newMethName = valueMatcher.group(1);
-			if(methods.get(newMethName) == null)
-				throw new InnvalidMethodException(newMethName);
-			Method method = methods.get(newMethName);
-			String varsline = valueMatcher.group(2);
-			if(varsline == null){
-				if(method.getVariables().length == 0)
-					return true;
-				throw new illigalVariablesNumberException();
-			}
-			varsline = varsline.replace(Syntax.unS, "");
-			String[] varsNames = varsline.split(",");
-			if(varsNames.length != method.getVariables().length)
-				throw new illigalVariablesNumberException();
-			for(int i = 0; i < varsNames.length; i++){
-				
-				if(!Compiler.isValueFitExpression(varsNames[i], method.getVariables()[i].getType())){
-					Variable var = block.getVar(varsNames[i]);
-					if(var == null || !var.isHasValue()){
-						throw new notInitializedVariableException(varsNames[i]);
-					}
-					if(!var.getType().equals(method.getVariables()[i].getType())){
-						throw new TypeNotMatchesException(var.getName(), method.getVariables()[i].getName());
-					}
-				}
-			}
-			return true;
-		}
-		return false;
-	}
+	
 	
 
 }
