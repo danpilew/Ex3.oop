@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import clids.ex4.Exceptions.MethodAlreadyExistException;
 import clids.ex4.Exceptions.TypeNotMatchesException;
 import clids.ex4.Exceptions.VariableAlreadyExistException;
 import clids.ex4.Exceptions.charAfterEndException;
@@ -191,7 +192,7 @@ public class Compiler {
 
 
 	// METHOD DEFINE
-	public static Method MethDefine(String line, HashMap<String, Method> methods) {
+	public static Method MethDefine(String line, HashMap<String, Method> methods) throws MethodAlreadyExistException {
 		// create Pattern & Matcher
 		final Pattern METHOD_DEFINE_PATTERN = Pattern.compile(Syntax.method_Defined_Line);
 		Matcher METHMatcher = METHOD_DEFINE_PATTERN.matcher(line);
@@ -201,6 +202,14 @@ public class Compiler {
 		
 		else{
 			String methName = METHMatcher.group(1).replaceAll(Syntax.unS, "");
+			if (methods.get(methName)!=null){
+				MethodAlreadyExistException e = new MethodAlreadyExistException();
+				throw e;
+			}
+			if (METHMatcher.group(2) == null){
+				return new Method(null, methName);
+			}
+			else{
 			String[] Variables = METHMatcher.group(2).split(",");
 			// Variables[i] is look like : type name
 			Variable[] VarsInMeth = new Variable[Variables.length];
@@ -210,26 +219,26 @@ public class Compiler {
 				VarsInMeth[i] = var;
 			}	
 			return new Method(VarsInMeth, methName);
+			}
 		}
 	}
 	
 	
 	 private static Variable defineVarForMethod(String typePLUSvar) {
 		// create Pattern & Matcher
-			final Pattern varInMeth_PATTERN = Pattern.compile(Syntax.method_Defined_Line);
+			final Pattern varInMeth_PATTERN = Pattern.compile(Syntax.typeAndVar);
 			Matcher varInMethMatcher = varInMeth_PATTERN.matcher(typePLUSvar);
-			if(!varInMethMatcher.matches()){
-				System.out.println("WTF - should fix but not"); // REMOVE
-			}
-			else {
+			if(varInMethMatcher.matches()){
 				boolean isFinal = (!(varInMethMatcher.group(1)==null));
-				String name = varInMethMatcher.group(2).replaceAll(Syntax.unS, "");
+				String name = varInMethMatcher.group(3).replaceAll(Syntax.unS, "");
 				VariableType.Type type = VariableType.valueOf(varInMethMatcher.group(2).replaceAll(Syntax.unS, ""));
 				boolean hasValue = true;
 				Variable newVar = new Variable(name, type, isFinal, hasValue);
 				return newVar;
 			}
-		return null;
+			else{
+				return null;
+			}
 	}
 	
 	 
