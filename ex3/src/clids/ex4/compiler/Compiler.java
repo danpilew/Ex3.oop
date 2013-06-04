@@ -198,7 +198,7 @@ public class Compiler {
 
 
 	// METHOD DEFINE
-	public static Method MethDefine(String line, HashMap<String, Method> methods) throws MethodAlreadyExistException {
+	public static Method MethDefine(String line, HashMap<String, Method> methods) throws MethodAlreadyExistException, VariableAlreadyExistException {
 		// create Pattern & Matcher
 		final Pattern METHOD_DEFINE_PATTERN = Pattern.compile(Syntax.method_Defined_Line);
 		Matcher METHMatcher = METHOD_DEFINE_PATTERN.matcher(line);
@@ -222,6 +222,12 @@ public class Compiler {
 			
 			for (int i = 0; i<VarsInMeth.length; i++){
 				Variable var = defineVarForMethod(Variables[i]);
+				//Check if there are two Variables with the same name.
+				
+					for(int j = i-1; j >= 0 ; j--){
+						if(var.getName().equals(VarsInMeth[j].getName()))
+							throw new VariableAlreadyExistException();
+					}
 				VarsInMeth[i] = var;
 			}	
 			return new Method(VarsInMeth, methName);
@@ -256,8 +262,10 @@ public class Compiler {
 			Pattern ifOrWhile = Pattern.compile(Syntax.IfWhile_Line);
 			Matcher ifOrWhileMatcher = ifOrWhile.matcher(line);
 			if(ifOrWhileMatcher.matches()){
-				String condition = ifOrWhileMatcher.group(2);
-				for(int i = 0; i<2 && condition != null; i++){
+				String conditionLine = ifOrWhileMatcher.group(2);
+				conditionLine = conditionLine.replaceAll(Syntax.unS, "");
+				String[] conditions = conditionLine.split(Syntax.AndOR);
+				for(String condition: conditions){
 					if(!Compiler.isValueFitExpression(condition,Type.BOOLEAN)){
 						Variable var = currentBlock.getVar(condition);
 						if(var == null || !var.isHasValue()){
@@ -267,7 +275,6 @@ public class Compiler {
 							throw new TypeNotMatchesException(condition, "if or while condition");
 						}
 					}
-					condition = ifOrWhileMatcher.group(5);
 				}
 				return true;
 			}
@@ -281,12 +288,12 @@ public class Compiler {
 			if(valueMatcher.matches()){
 				
 				String newMethName = valueMatcher.group(1);
-				if(methods.get(newMethName) == null)
+				if(methods.get(newMethName) == null )
 					throw new InnvalidMethodException(newMethName);
 				Method method = methods.get(newMethName);
 				String varsline = valueMatcher.group(2);
-				if(varsline == null){
-					if(method.getVariables().length == 0)
+				if(varsline == null || Compiler.isEmptyLine(varsline)){
+					if(method.getVariables() == null ||method.getVariables().length == 0)
 						return true;
 					throw new illigalVariablesNumberException();
 				}

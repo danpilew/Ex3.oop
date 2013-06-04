@@ -20,8 +20,10 @@ public class Block {
 		return variables;
 	}
 
-	public void setVariables(HashMap<String, Variable> variables) {
-		this.variables = variables;
+	public void putVariables(HashMap<String, Variable> variables) {
+		if(variables == null)
+			return;
+		this.variables.putAll(variables);
 	}
 
 	public int getStartLine() {

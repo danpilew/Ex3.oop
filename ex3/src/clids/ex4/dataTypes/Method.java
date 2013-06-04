@@ -1,4 +1,6 @@
 package clids.ex4.dataTypes;
+import java.util.HashMap;
+
 import clids.ex4.Exceptions.TypeNotMatchesException;
 import clids.ex4.Exceptions.illigalVariablesNumberException;
 import clids.ex4.Exceptions.notInitializedVariableException;
@@ -17,7 +19,15 @@ public class Method {
 		if(commands == null)
 			commands = block;
 	}
-
+	public HashMap<String, Variable> getVariableMap(){
+		if(variables == null)
+			return null;
+		HashMap<String, Variable> returnedMap = new HashMap<String, Variable>();
+		for(Variable var : variables){
+			returnedMap.put(var.getName(), var);
+		}
+		return returnedMap;
+	}
 	public Block getCommands() {
 		return commands;
 	}
