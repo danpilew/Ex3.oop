@@ -1,9 +1,6 @@
 package clids.ex4.dataTypes;
-import java.util.HashMap;
 
-import clids.ex4.Exceptions.TypeNotMatchesException;
-import clids.ex4.Exceptions.illigalVariablesNumberException;
-import clids.ex4.Exceptions.notInitializedVariableException;
+import java.util.HashMap;
 
 public class Method {
 	private final Variable[] variables;
@@ -15,19 +12,22 @@ public class Method {
 		this.name = name;
 		commands = null;
 	}
-	public void setBlock(Block block){
-		if(commands == null)
+
+	public void setBlock(Block block) {
+		if (commands == null)
 			commands = block;
 	}
-	public HashMap<String, Variable> getVariableMap(){
-		if(variables == null)
+
+	public HashMap<String, Variable> getVariableMap() {
+		if (variables == null)
 			return null;
 		HashMap<String, Variable> returnedMap = new HashMap<String, Variable>();
-		for(Variable var : variables){
+		for (Variable var : variables) {
 			returnedMap.put(var.getName(), var);
 		}
 		return returnedMap;
 	}
+
 	public Block getCommands() {
 		return commands;
 	}
@@ -38,22 +38,5 @@ public class Method {
 
 	public String getName() {
 		return name;
-	}
-
-	public void call(Variable[] inputVars) throws TypeNotMatchesException,
-			illigalVariablesNumberException, notInitializedVariableException {
-		if (variables.length != inputVars.length)
-			throw new illigalVariablesNumberException();
-
-		for (Variable var : inputVars) {
-			if (var.isHasValue())
-				throw new notInitializedVariableException(var.getName());
-		}
-		for (int i = 0; i < variables.length; i++) {
-			if (variables[i].getType() != inputVars[i].getType()) {
-				throw new TypeNotMatchesException(VariableType.getName(variables[i].getType()) 
-						, VariableType.getName(inputVars[i].getType())); // CHECK IT, RETURN NAME OF TYPE, NOT OF VAR
-			}
-		}
 	}
 }

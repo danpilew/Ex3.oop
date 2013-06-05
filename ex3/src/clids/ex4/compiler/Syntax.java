@@ -22,7 +22,7 @@ public class Syntax {
 	public static final String charValue = unS + "'" + "." + "'" + unS;
 	public static final String StringValue = unS + "\".*\"" + unS;
 	public static final String booleanValue = unS + "true|false" + "|"
-			+ doubleValue + unS; // check IT
+			+ doubleValue + unS;
 	public static final String any_Value = "(?:" + intValue + "|" + doubleValue
 			+ "|" + charValue + "|" + StringValue + "|" + booleanValue + ")";
 	public static final String Equality = "=";
@@ -30,7 +30,7 @@ public class Syntax {
 			+ unS
 			+ (oBr + "?:" + unS + Equality + unS
 					+ (oBr + "?:" + any_Value + "|" + varName + cBr) + cBr)
-			+ "?" + unS; // check if () are OK
+			+ "?" + unS;
 
 	// METHODS
 	public static final String methodReturn = "void"; // could be expanded
@@ -47,7 +47,7 @@ public class Syntax {
 	public static final String condition = unS + "\\(" + unS + "(" + "(?:"
 			+ legalInCondition + ")" + "("
 			+ (unS + AndOR + unS + "(?:" + legalInCondition + ")") + ")" + "*"
-			+ ")" + unS + "\\)" + unS; // booleanValue included double
+			+ ")" + unS + "\\)" + unS;
 
 	// FINAL
 	public static final String var_Line = unS
@@ -63,7 +63,6 @@ public class Syntax {
 			+ (oBr + (oBr + ":?" + unS + "," + unS + initialWay + cBr) + "*" + cBr)
 			+ unS + endLine + unS;
 
-	// public static final String var_putValue = unS + //
 
 	public static final String method_Defined_Line = unS + methodReturn + NS
 			+ methodName + unS + "\\(" + "(" + unS + "(?:" + "(?:"
@@ -72,18 +71,12 @@ public class Syntax {
 			+ "?" + varType + NS + varName + unS + ")" + "*" + ")" + "?"
 			+ "\\)" + unS + openBlock + unS;
 
-	
-
 	public static final String method_call_Line = unS + methodName + unS
-			+ "\\(" + unS + "(" + "(?:" +varName + "|" + any_Value+ ")" + unS + "(?:" + "," + unS
-			+ "(?:" + varName + "|" + any_Value + ")" + unS + ")" + "*" + ")"
-			+ "?" + "\\)" + unS + endLine + unS;
-	
+			+ "\\(" + unS + "(" + "(?:" + varName + "|" + any_Value + ")" + unS
+			+ "(?:" + "," + unS + "(?:" + varName + "|" + any_Value + ")" + unS
+			+ ")" + "*" + ")" + "?" + "\\)" + unS + endLine + unS;
+
 	public static final String IfWhile_Line = IfWhile + unS + condition + unS
 			+ openBlock;
-
-	public Syntax() {
-		// TODO Auto-generated constructor stub
-	}
 
 }

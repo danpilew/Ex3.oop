@@ -1,14 +1,14 @@
 package clids.ex4.Exceptions;
 
-public class DuplicateMethodException extends Exception {
+public class DuplicateMethodException extends CompilingException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public DuplicateMethodException(String name) {
-		super("The method with name " + name + " already exists");
+	public DuplicateMethodException(int line, String name) {
+		super(line, "The method with name " + name + " already exists");
 	}
 
 }

@@ -1,13 +1,13 @@
 package clids.ex4.Exceptions;
 
-public class illigalVariablesNumberException extends Exception {
+public class illigalVariablesNumberException extends CompilingException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public illigalVariablesNumberException(){
-		super("Illigal number of variables");
+	public illigalVariablesNumberException(int line) {
+		super(line, "Illigal number of variables");
 	}
 }
