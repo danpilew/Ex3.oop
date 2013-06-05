@@ -18,7 +18,7 @@ public class Syntax {
 	public static final String varName = "_?[a-zA-Z]\\w*";
 	public static final String intValue = unS + "-?\\d+" + unS;
 	public static final String doubleValue = unS + intValue
-			+ "(?:\\.\\d)?\\d*+" + unS;
+			+ "(?:(?:\\.\\d)\\d*)?" + unS;
 	public static final String charValue = unS + "'" + "." + "'" + unS;
 	public static final String StringValue = unS + "\".*\"" + unS;
 	public static final String booleanValue = unS + "true|false" + "|"
@@ -46,8 +46,8 @@ public class Syntax {
 	public static final String legalInCondition = booleanValue + "|" + varName;
 	public static final String condition = unS + "\\(" + unS + "(" + "(?:"
 			+ legalInCondition + ")" + "("
-			+ (unS + AndOR + unS + "(?:" + legalInCondition + ")") + ")" + "*" +")"
-			+ unS + "\\)" + unS; // booleanValue included double
+			+ (unS + AndOR + unS + "(?:" + legalInCondition + ")") + ")" + "*"
+			+ ")" + unS + "\\)" + unS; // booleanValue included double
 
 	// FINAL
 	public static final String var_Line = unS
@@ -72,11 +72,13 @@ public class Syntax {
 			+ "?" + varType + NS + varName + unS + ")" + "*" + ")" + "?"
 			+ "\\)" + unS + openBlock + unS;
 
-	public static final String method_call_Line = unS + methodName + unS
-			+ "\\(" + unS + "(" + "(?:" + varName + "|" + any_Value + ")" + "?" + unS
-			+ "(?:" + "," + unS + varName + "|" + any_Value + unS + ")" + "*" +")"
-			+ unS + "\\)" + unS + endLine + unS;
+	
 
+	public static final String method_call_Line = unS + methodName + unS
+			+ "\\(" + unS + "(" + "(?:" +varName + "|" + any_Value+ ")" + unS + "(?:" + "," + unS
+			+ "(?:" + varName + "|" + any_Value + ")" + unS + ")" + "*" + ")"
+			+ "?" + "\\)" + unS + endLine + unS;
+	
 	public static final String IfWhile_Line = IfWhile + unS + condition + unS
 			+ openBlock;
 

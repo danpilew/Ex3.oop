@@ -27,12 +27,14 @@ public class Compiler {
 	public static boolean VarDefine(String line ,Block currentBlock, boolean inMethod) 
 			throws TypeNotMatchesException, notInitializedVariableException, charAfterEndException, VariableAlreadyExistException, invalidActionException, illegalExpressionException {
 		// get Vars
-		HashMap<String, Variable> localVars = currentBlock.getVariables();
+		HashMap<String, Variable> localVariables = currentBlock.getVariables();
+		System.out.println("line1   " + line); // REMOVE
 		// create Pattern & Matcher
 		final Pattern Var_PATTERN = Pattern.compile(Syntax.var_Line);
 		Matcher VarMatcher = Var_PATTERN.matcher(line);
 		// check match
 		if (VarMatcher.matches()){
+			System.out.println("was HERE  " + line);
 			// legal length 
 			if (VarMatcher.end() < line.length()){ // CHECK CONDITION & EXEPTION
 				charAfterEndException e = new charAfterEndException();
@@ -56,12 +58,17 @@ public class Compiler {
 			// initial the array of Variables -
 			// 1 - because must be one variable at group (3) 
 			// the other variables are
-			initialVar(firstVar, isFinal, type, localVars, currentBlock); 
+			Variable newVar = initialVar(firstVar, isFinal,localVariables, type, currentBlock); 
+			localVariables.put(newVar.getName(), newVar);
 			String extraVarsEsp =  VarMatcher.group(4).replaceAll(Syntax.unS, "");
 			String[] extraVars =  extraVarsEsp.split(",");
 			for (String varDef: extraVars){
-				initialVar(varDef, isFinal, type, localVars, currentBlock);
+				newVar = initialVar(varDef, isFinal,localVariables, type, currentBlock);
+				if(newVar != null){
+					localVariables.put(newVar.getName(), newVar);
+				}
 			}
+			currentBlock.putVariables(localVariables);
 			return true;
 		}
 		else{
@@ -96,17 +103,17 @@ public class Compiler {
 	}
 
 	// Auxiliary method of VarDefine
-	private static void initialVar(String expression, boolean isFinal, Type type, HashMap<String, Variable> localVars, Block currentBlock) throws TypeNotMatchesException, VariableAlreadyExistException, notInitializedVariableException {
+	private static Variable initialVar(String expression, boolean isFinal,HashMap<String, Variable> localVariables, Type type, Block currentBlock) throws TypeNotMatchesException, VariableAlreadyExistException, notInitializedVariableException {
 		String[] arrExpression = expression.split("=");
 	//	System.out.println("arrExpression"); // REMOVE
 		//for (String exp: arrExpression) // REMOVE
 			//System.out.println(exp);
-		boolean hasValue;
+		boolean hasValue = false;
 		String name = arrExpression[0];
 		if (name.equals("")){
-			return;
+			return null;
 		}
-		if (localVars.get(name) != null){
+		if (localVariables.get(name) != null){
 			VariableAlreadyExistException e = new VariableAlreadyExistException();
 			throw e;
 		}
@@ -124,14 +131,11 @@ public class Compiler {
 				throw e;
 			}
 		}
-		else{
-			return;
-		}
 		if (isFinal && !hasValue){
 			notInitializedVariableException e = new notInitializedVariableException(name);
 			throw e;
 		}
-		localVars.put(name, new Variable(name, type, isFinal, hasValue)); 
+		return new Variable(name, type, isFinal, hasValue); 
 	}
 	// Auxiliary method of initialVar
 	private static boolean valueIsOk(String value, Type type, Block currentBlock) {
@@ -262,16 +266,18 @@ public class Compiler {
 			Pattern ifOrWhile = Pattern.compile(Syntax.IfWhile_Line);
 			Matcher ifOrWhileMatcher = ifOrWhile.matcher(line);
 			if(ifOrWhileMatcher.matches()){
+				System.out.println("line" + line); // REMOVE
 				String conditionLine = ifOrWhileMatcher.group(2);
 				conditionLine = conditionLine.replaceAll(Syntax.unS, "");
 				String[] conditions = conditionLine.split(Syntax.AndOR);
 				for(String condition: conditions){
+					System.out.println("condition"+ condition);
 					if(!Compiler.isValueFitExpression(condition,Type.BOOLEAN)){
 						Variable var = currentBlock.getVar(condition);
 						if(var == null || !var.isHasValue()){
 							throw new notInitializedVariableException(condition);
 						}
-						if(var.getType() != Type.BOOLEAN){
+						if(var.getType() != Type.BOOLEAN && var.getType() != Type.INT && var.getType() != Type.DOUBLE){
 							throw new TypeNotMatchesException(condition, "if or while condition");
 						}
 					}

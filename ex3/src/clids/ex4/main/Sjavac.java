@@ -39,6 +39,8 @@ private static final String IO_FAILIOUR_MASSAGE = " IO Exception, wrong file des
 			e.printStackTrace();
 			System.exit(COMPILATION_FAILIOUR);
 		}
+		System.out.println(Syntax.var_Line);
+
 		System.out.println("Yes");
 		System.exit(COMPILED);
 	}

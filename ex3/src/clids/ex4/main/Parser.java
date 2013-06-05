@@ -42,7 +42,6 @@ public class Parser {
 				continue;
 			}
 			boolean isNewVars = Compiler.VarDefine(code[n], superBlock, !inMethod);
-
 			if (!isNewVars) {
 				Method newMethod = Compiler.MethDefine(code[n], methods);
 				if (newMethod == null) {
@@ -72,6 +71,7 @@ public class Parser {
 			if(Compiler.isCommentLine(line) || Compiler.isEmptyLine(line) ||Compiler.isReturnLine(line) ){
 				continue;
 			}
+			line = line.trim();
 			/*//If therre is a return statement, checks if we are inside a method.
 			if(Compiler.isReturnLine(line) && commands.getFatherBlock().equals(superBlock)){
 				continue;
@@ -80,11 +80,12 @@ public class Parser {
 			if(!Compiler.VarDefine(line, commands , inMethod)){
 				//Var changed
 				if(!Compiler.methodCall(line, commands, methods)){
-					boolean ifOrWhile = Compiler.isBlockDefine(line, superBlock, n);
+
+					boolean ifOrWhile = Compiler.isBlockDefine(line, commands, n + commands.getStartLine());
 					if(!ifOrWhile){
 						throw new illegalExpressionException();
 					}else{
-						Block ifOrWhileBlock = findBlock(n, commands );
+						Block ifOrWhileBlock = findBlock(n + commands.getStartLine(), commands );
 						compileBlock(ifOrWhileBlock);
 						n = n+ifOrWhileBlock.getLines().length-1;
 					}
@@ -96,7 +97,7 @@ public class Parser {
 
 	public Block findBlock(int n, Block fatherBlock) throws DefectiveBlockBuildingException {
 		String[] code = superBlock.getLines();
-		int lineNumber = n;
+		int lineNumber =  n;
 		int blockCounter = 0;
 		System.out.println("lineNumber = " + lineNumber);
 		String line = code[lineNumber];
@@ -117,15 +118,18 @@ public class Parser {
 			line = code[lineNumber];
 			for (int i = 0; i < line.length(); i++) {
 				if (line.charAt(i) == Syntax.openBlock.charAt(1)) {
+					System.out.println(" Open! " + Syntax.openBlock.charAt(1) + line);
 					blockCounter++;
-				}
-				if (line.charAt(0) == Syntax.closeBlock.charAt(1)) {
+				}else
+				if (line.charAt(i) == Syntax.closeBlock.charAt(1)) {
+					System.out.println(" Close!" + Syntax.closeBlock.charAt(1));
+
 					blockCounter--;
 				}
 			}
 		}
 		// Creates the block as a subArray
-		String[] blockCode = Arrays.copyOfRange(code, n, lineNumber + 1);
+		String[] blockCode = Arrays.copyOfRange(code, n , lineNumber + 1);
 		// Removes everything that is before the '{'
 		blockCode[0] = blockCode[0].substring(blockCode[0]
 				.indexOf(Syntax.openBlock.charAt(1)) + 1);
